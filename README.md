@@ -191,3 +191,7 @@ No neural data is included here. All of it is public and has to be downloaded fr
 
 The files in `results/cells/` contain the cued sentences of the held-out trials next to each
 model's predictions, and nothing else from these datasets.
+
+## Licence
+
+Code: MIT (see `LICENSE`). The datasets belong to their authors and are not redistributed here.
