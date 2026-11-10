@@ -1,0 +1,17 @@
+[project]
+name = "intracorticalbench"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=2.7.0",
+    "h5py>=3.16.0",
+    "jiwer>=4.0.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "openai>=3.48.0",
+    "pillow>=13.0.0",
+    "python-dotenv>=1.2.4",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "torch>=2.15.0",
+]
