@@ -55,8 +55,10 @@ def _bin(x: np.ndarray, n: int) -> np.ndarray:
     return x[:t].reshape(-1, n, x.shape[1]).mean(1)
 
 
-def load_sentences(name: str) -> tuple[list[Trial], float]:
+def load_sentences(name: str, frame: int | None = None) -> tuple[list[Trial], float]:
+    """frame: source steps averaged per output frame; default is the dataset's own setting."""
     kind, path, nbin, ms = SENTENCE_SETS[name]
+    nbin = frame or nbin
     out = []
     if kind == "t15":
         import h5py
@@ -108,13 +110,15 @@ def load_words(participant: str) -> list[Trial]:
     return out
 
 
-def quantise(trials: list[Trial], k: int) -> list[np.ndarray]:
-    """PCA to k components (fit on all given trials' frames, no labels), then per-component deciles."""
+def quantise(trials: list[Trial], k: int, levels: int = 10) -> list[np.ndarray]:
+    """PCA to k components (fit on all given trials' frames, no labels), then per-component quantile
+    levels (10 = deciles)."""
     from sklearn.decomposition import PCA
     frames = np.concatenate([t.x for t in trials])
     z = PCA(k, random_state=0).fit_transform(frames)
-    edges = np.quantile(z, np.linspace(0.1, 0.9, 9), axis=0)     # (9, k)
-    q = (z[:, None, :] > edges[None]).sum(1).astype(np.int8)      # 0..9
+    cut = np.linspace(0.1, 0.9, 9) if levels == 10 else np.linspace(0, 1, levels + 1)[1:-1]
+    edges = np.quantile(z, cut, axis=0)                           # (levels - 1, k)
+    q = (z[:, None, :] > edges[None]).sum(1).astype(np.int8)      # 0 .. levels - 1
     cuts = np.cumsum([len(t.x) for t in trials])[:-1]
     return np.split(q, cuts)
 

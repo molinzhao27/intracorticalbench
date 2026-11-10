@@ -44,7 +44,7 @@ def learning_curve() -> None:
     ax = fig.add_axes([0.085, 0.215, 0.58, 0.535])
     frame(fig, "Zero-shot fails. With examples in the prompt, it decodes.",
           "Word error rate on held-out sentences. Attempted speech recorded with intracortical arrays, 50-word vocabulary. Plain model calls: no tools, no training.",
-          "48 held-out sentences per point (GPT Astra high effort at 64 and 192: first 24). Guessing = the same prompts with the neural activity removed. "
+          "48 held-out sentences per point. Guessing = the same prompts with the neural activity removed. "
           "† no answer within the output limit at 192. Data: Card et al. 2024 (participant T15).")
     series = [("opus", "high", AQUA, "-", "Opus 5.5, high effort"), ("fable", "low", ORANGE, "--", "Fable 5.2, low effort"),
               ("fable", "high", ORANGE, "-", "Fable 5.2, high effort"), ("astra", "low", BLUE, "--", "GPT Astra, low effort"),
@@ -88,36 +88,42 @@ def learning_curve() -> None:
 
 
 def ladder() -> None:
-    rows = [("50-word vocabulary", [("t15_small__text__astra__k192__low", "In the prompt, no tools"),
-                                    ("t15_small__text__astra-codex-lite__k192__high", "Code as a viewer and calculator only"),
-                                    ("t15_small__text__astra-codex__k192__high", "Free to write and train a decoder")]),
-            ("Open vocabulary", [("t15_open__text__astra__k192__low", "In the prompt, no tools"),
-                                 ("t15_open__text__astra-codex-lite__k192__high", "Code as a viewer and calculator only"),
-                                 ("t15_open__text__astra-codex__k192__high", "Free to write and train a decoder")])]
-    fig = plt.figure(figsize=(8, 4.5), dpi=200)
-    frame(fig, "The more it is allowed to compute, the better it decodes.",
-          "GPT Astra, word error rate on held-out sentences, given 192 labelled trials from the same session. Grey tick = chance for that run.",
-          "48 held-out sentences per bar (open vocabulary in the prompt: 32). Chance = the same predictions re-paired with other trials of matching duration. "
-          "Tool runs: Codex CLI, sandboxed and audited, one run each. Data: Card et al. 2024 (participant T15).")
-    for j, (name, cells) in enumerate(rows):
-        ax = fig.add_axes([0.36, 0.475 - j * 0.31, 0.56, 0.24])
-        for i, (c, label) in enumerate(cells):
-            s = cell(c)["score"]
-            y = 2 - i
-            ax.barh(y, s["wer"], height=0.62, color=RAMP[i], zorder=2)
-            ax.plot([s["wer_chance_len"]] * 2, [y - 0.38, y + 0.38], color=MUTED, lw=2, zorder=3)
-            ax.text(s["wer"] + 0.02 if abs(s["wer"] - s["wer_chance_len"]) > 0.09 or s["wer"] < s["wer_chance_len"] - 0.09 else s["wer_chance_len"] + 0.03, y, r2(s["wer"]),
-                    fontsize=10, fontweight="bold", color=INK, va="center")
-            ax.text(-0.03, y, label, fontsize=9.5, color=INK, va="center", ha="right")
-        ax.text(-0.03, 2.95, name, fontsize=10.5, fontweight="bold", color=INK, ha="right", va="center")
-        ax.set_xlim(0, 1.25); ax.set_ylim(-0.5, 2.6)
+    conds = ["In the prompt, no tools", "Code to look at a 12-number summary", "Code to manipulate the full recording, no ML", "Free to write and train a decoder"]
+    ramp = ["#b7d3f6", "#6da7ec", "#2a78d6", "#104281"]              # one hue, light to dark, in order of freedom
+    # in-prompt cells at high effort, like the tool runs: API for the first, Codex with tools forbidden for the others
+    rows = [("50-word vocabulary, 192 examples", "t15_small", 192, "t15_small__text__astra__k192__high"),
+            ("Open vocabulary, 192 examples", "t15_open", 192, "t15_open__text__astra-codex-notools__k192__high"),
+            ("Second participant, 72 examples", "t16_small", 72, "t16_small__text__astra-codex-notools__k72__high")]
+    fig = plt.figure(figsize=(8, 5.6), dpi=200)
+    import textwrap
+    fig.text(0.05, 0.95, "Small vocabulary: the prompt is enough. Open vocabulary needs tools.", fontsize=12.8, fontweight="bold", color=INK, va="center")
+    fig.text(0.05, 0.915, textwrap.fill("GPT Astra: word error rate on 48 held-out sentences, with labelled trials from the same session. "
+                                         "Grey tick = chance. No ML = nothing fitted or trained; the model compares segments itself.", 100),
+             fontsize=10, color=INK2, va="top", linespacing=1.35)
+    fig.text(0.05, 0.05, textwrap.fill("All bars: high reasoning effort, one run each. Chance = the same predictions re-paired with other trials of matching duration. "
+                                         "Tool runs: Codex CLI, sandboxed and audited. Data: Card et al. 2024 (first two panels), Kunz et al. 2025 (third).", 132),
+             fontsize=7.8, color=MUTED, va="top", linespacing=1.35)
+    for j, (name, ds, k, prompt_cell) in enumerate(rows):
+        ax = fig.add_axes([0.40, 0.615 - j * 0.235, 0.53, 0.175])
+        cells = [prompt_cell, f"{ds}__text__astra-codex-lite__k{k}__high",
+                 f"{ds}__text__astra-codex-manipulate__k{k}__high", f"{ds}__text__astra-codex__k{k}__high"]
+        for i, c in enumerate(cells):
+            sc = cell(c)["score"]
+            y = 3 - i
+            ax.barh(y, sc["wer"], height=0.66, color=ramp[i], zorder=2)
+            ax.plot([sc["wer_chance_len"]] * 2, [y - 0.4, y + 0.4], color=MUTED, lw=2, zorder=3)
+            near = abs(sc["wer"] - sc["wer_chance_len"]) < 0.09
+            ax.text((sc["wer_chance_len"] if near else sc["wer"]) + 0.02, y, r2(sc["wer"]), fontsize=9.5, fontweight="bold", color=INK, va="center")
+            ax.text(-0.03, y, conds[i], fontsize=8.8, color=INK, va="center", ha="right")
+        ax.text(-0.03, 4.02, name, fontsize=10, fontweight="bold", color=INK, ha="right", va="center")
+        ax.set_xlim(0, 1.25); ax.set_ylim(-0.55, 3.6)
         ax.set_yticks([]); ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
-        ax.tick_params(axis="x", labelsize=8.5, colors=MUTED, length=0, labelbottom=(j == 1))
+        ax.tick_params(axis="x", labelsize=8.5, colors=MUTED, length=0, labelbottom=(j == 2))
         ax.grid(axis="x", color=GRID, lw=0.8); ax.set_axisbelow(True)
         for sp in ax.spines.values():
             sp.set_visible(False)
-        if j == 1:
-            ax.set_xlabel("word error rate (lower is better)", fontsize=9.5, color=INK2, labelpad=6)
+        if j == 2:
+            ax.set_xlabel("word error rate (lower is better)", fontsize=9.5, color=INK2, labelpad=3)
     fig.savefig(OUT / "2_tools_ladder.png")
     plt.close(fig)
 
@@ -129,7 +135,7 @@ def examples() -> None:
     fig = plt.figure(figsize=(8, 4.5), dpi=200)
     frame(fig, "What goes in, what comes out.",
           "GPT Astra, high effort. 192 labelled trials in the prompt, then held-out trials. Plain model call: no tools, no training.",
-          "First 14 held-out sentences (participant T15, 50-word vocabulary; data: Card et al. 2024). Each letter is one principal component's decile in a 160 ms frame; "
+          "First 14 of 48 held-out sentences (participant T15, 50-word vocabulary; data: Card et al. 2024). Each letter is one principal component's decile in a 160 ms frame; "
           "twelve components per frame.")
     fig.text(0.05, 0.775, "IN: neural activity, as text", fontsize=9.5, fontweight="bold", color=INK2)
     q, label, sec = ctx[0]

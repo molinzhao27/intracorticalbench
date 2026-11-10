@@ -17,7 +17,7 @@ from . import data, models
 from .score import score
 
 RESULTS = models.ROOT / "runs/results"
-LETTERS = "ABCDEFGHIJ"
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"                          # first ten are the default deciles
 
 SETUP = """You are the decoder in a research benchmark on speech brain-computer interfaces.
 
@@ -36,6 +36,23 @@ FMT = {
     "none": "The neural activity is withheld in this control condition. You are given only each trial's duration in seconds.",
     "vector": "Each trial is one line of {k} letters: the activity averaged over the 1.5 s after the go cue, one letter per principal component of the population activity (PCA over all electrodes' z-scored features; the same {k} components in the same order for every trial here). A letter is that component's decile over all trials: A = lowest 10%, J = highest 10%.",
 }
+
+
+def describe(fmt: str, dt: float, pcs: int, levels: int = 10) -> str:
+    """The DATA FORMAT paragraph. With the default ten levels the wording is unchanged."""
+    text = FMT[fmt].format(ms=int(dt * 1000), k=pcs)
+    if levels != 10 and fmt == "text":
+        old = "A letter is that component's decile over the whole session: A = lowest 10%, J = highest 10%."
+        assert old in text
+        text = text.replace(old, f"A letter is that component's level over the whole session, in {levels} equally populated steps: "
+                                 f"A = lowest, {LETTERS[levels - 1]} = highest.")
+    return text
+
+
+def encoding_tag(a) -> str:
+    """Suffix for result names when the encoding differs from the default (12 components, deciles, dataset frame)."""
+    parts = [f"pc{a.pcs}"] * (a.pcs != 12) + [f"lv{a.levels}"] * (getattr(a, "levels", 10) != 10) + [f"fr{a.frame}"] * bool(getattr(a, "frame", None))
+    return "-".join(parts)
 
 
 def render(q: np.ndarray, fmt: str) -> list[dict]:
@@ -84,15 +101,16 @@ def parse(text: str, n: int) -> list[str]:
 def prepare(a, task: str, dataset: str, k: int):
     """Fixed split and features for a dataset. Returns (queries, context, frame seconds, wording)."""
     rng = np.random.default_rng(a.seed)
+    levels, frame = getattr(a, "levels", 10), getattr(a, "frame", None)   # encoding options; defaults = the main benchmark
     if task == "sentences":
         base = dataset.split(":")[-1]
         if ">" in base:                                           # "A>B": labelled trials from session A, queries from B
             src, dst = base.split(">")
-            lab, dt = data.load_sentences(src)
-            tst, _ = data.load_sentences(dst)
+            lab, dt = data.load_sentences(src, frame)
+            tst, _ = data.load_sentences(dst, frame)
             used = [tst[i] for i in rng.permutation(len(tst))[:a.nq]] + [lab[i] for i in rng.permutation(len(lab))[:a.kmax]]
         else:
-            trials, dt = data.load_sentences(base)
+            trials, dt = data.load_sentences(base, frame)
             order = rng.permutation(len(trials))
             qi, pool = order[:a.nq], order[a.nq:]
             used = [trials[i] for i in np.r_[qi, pool[:a.kmax]]]  # features fixed across k
@@ -100,7 +118,7 @@ def prepare(a, task: str, dataset: str, k: int):
         if dataset.startswith("planted_"):
             q = data.plant(used, a.pcs, dataset.split(":")[0].split("_")[1])
         else:
-            q = data.quantise(used, a.pcs)
+            q = data.quantise(used, a.pcs, levels)
         beh = data.BEHAVIOUR.get(base.split(">")[-1])
         wording = ("an English sentence", "the sentence the participant was " + ("imagining" if beh else "attempting to say"), "Sentence")
     else:
@@ -125,13 +143,14 @@ def run_cell(a, task: str, dataset: str, model: str, k: int, effort: str) -> dic
     nq, k = len(queries), len(ctx)
     if a.seed:                                                    # a different random split is its own dataset row
         dataset = f"{dataset}#split{a.seed}"
-    name = f"{task}__{dataset.replace('>', '-to-')}__{a.fmt}__{model}__k{k if task == 'sentences' else min(k, 1)}__{effort}"
+    fmt_name = a.fmt + ("-" + encoding_tag(a) if encoding_tag(a) else "")
+    name = f"{task}__{dataset.replace('>', '-to-')}__{fmt_name}__{model}__k{k if task == 'sentences' else min(k, 1)}__{effort}"
     path = RESULTS / f"{name}.json"
     fmt = "vector" if (task == "words" and a.fmt == "text") else a.fmt
     base = dataset.split(":")[-1].split("#")[0]
     cross = ">" in base
     behaviour = data.BEHAVIOUR.get(base.split(">")[-1], "attempt to say it aloud")
-    system = SETUP.format(what=what, target=target, behaviour=behaviour, fmt=FMT[fmt].format(ms=int(dt * 1000), k=a.pcs))
+    system = SETUP.format(what=what, target=target, behaviour=behaviour, fmt=describe(fmt, dt, a.pcs, getattr(a, "levels", 10)))
     if task == "sentences":                                       # session facts from non-query trials
         nw = [len(x[1].split()) for x in pool]
         sec = [x[2] for x in pool]
@@ -151,7 +170,7 @@ def run_cell(a, task: str, dataset: str, model: str, k: int, effort: str) -> dic
     outs = [first] + rest
     preds = [p for o, b in zip(outs, batches) for p in parse(o["text"], len(b))]
     refs = [x[1] for x in queries]
-    res = dict(name=name, task=task, dataset=dataset, fmt=a.fmt, model=model, k=k, effort=effort, n=nq,
+    res = dict(name=name, task=task, dataset=dataset, fmt=fmt_name, model=model, k=k, effort=effort, n=nq,
                preds=preds, refs=refs, missing=sum(not p for p in preds),
                stops=[o["stop"] for o in outs], refusals=[o.get("refusal") for o in outs if o["stop"] == "refusal"], cost=sum(o["cost"] for o in outs),
                out_tokens=[o["usage"]["output"] for o in outs],
@@ -181,6 +200,8 @@ def main() -> None:
     p.add_argument("--effort", nargs="+", default=["high"])
     p.add_argument("--fmt", default="text", choices=["text", "image", "none"])
     p.add_argument("--pcs", type=int, default=12)
+    p.add_argument("--levels", type=int, default=10, help="quantile levels per component (10 = deciles, up to 26)")
+    p.add_argument("--frame", type=int, default=None, help="source steps averaged per frame (default: dataset setting)")
     p.add_argument("--nq", type=int, default=48)
     p.add_argument("--nq-per-word", type=int, default=6)
     p.add_argument("--kmax", type=int, default=192)

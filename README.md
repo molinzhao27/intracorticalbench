@@ -42,20 +42,19 @@ and durations alone achieves.
 | Labelled trials | GPT Astra, low | GPT Astra, high | Fable 5.2, low | Fable 5.2, high | Opus 5.5, low | Opus 5.5, high |
 |---|---|---|---|---|---|---|
 | 0 | 1.24 (1.25) | 1.10 (1.10) | 1.23 (1.23) | 1.06 (1.07) | 1.07 (1.08) | 1.19 (1.20) |
-| 16 | 0.64 (0.90) | 0.41 (0.82), 40 answered | 0.80 (0.90) | 0.72 (0.93) | 0.92 (0.94) | 0.84 (0.93), 40 answered |
-| 64 | 0.31 (0.78) | 0.16 (0.74), first 24 only | 0.75 (0.87) | 0.65 (0.91), 40 answered | 0.93 (0.95) | 0.83 (0.93) |
-| 192 | 0.15 (0.74) | 0.09 (0.73), first 24 only | 0.68 (0.90) | no answer | 0.94 (0.96) | 0.86 (0.93) |
+| 16 | 0.64 (0.90) | 0.46 (0.84) | 0.80 (0.90) | 0.72 (0.93) | 0.92 (0.94) | 0.84 (0.93), 40 answered |
+| 64 | 0.31 (0.78) | 0.20 (0.75) | 0.75 (0.87) | 0.65 (0.91), 40 answered | 0.93 (0.95) | 0.83 (0.93) |
+| 192 | 0.15 (0.74) | 0.08 (0.73) | 0.68 (0.90) | no answer | 0.94 (0.96) | 0.86 (0.93) |
 
 - **Zero-shot is at chance for every model** at both efforts (p = 0.25-0.47). There is no built-in
   decoder.
-- **With labelled trials in the prompt, GPT Astra decodes**: WER 0.15 with 192 trials, 56% of
-  sentences exactly right, against 0.93 with activity withheld. A second random split of the same
+- **With labelled trials in the prompt, GPT Astra decodes**: WER 0.15 with 192 trials at low effort (56%
+  of sentences exactly right) and 0.08 at high effort (79%), against 0.93 with activity withheld. A second random split of the same
   session gives 0.20 (54% exact; 0.98 withheld). Fable 5.2 is clearly above chance
   (p <= 0.0002 in every cell) but far weaker. Opus 5.5 beats the permutation null only at high
   effort and is not better than its own activity-withheld arm.
-- **Reasoning helps where there is signal**: on identical sentences GPT Astra goes 0.61 -> 0.41 at
-  16 trials, 0.32 -> 0.16 at 64 and 0.14 -> 0.09 at 192 (83% of sentences exact), at about 20x the
-  output tokens; Fable 0.80 -> 0.72 at 16 trials and 0.75 -> 0.65 at 64. At 192 trials Fable at high effort used its whole 64k-token
+- **Reasoning helps where there is signal**: GPT Astra goes 0.64 -> 0.46 at 16 trials, 0.31 -> 0.20
+  at 64 and 0.15 -> 0.08 at 192, at about 20x the output tokens; Fable 0.80 -> 0.72 at 16 trials and 0.75 -> 0.65 at 64. At 192 trials Fable at high effort used its whole 64k-token
   output limit on all six calls without answering.
 - **Open vocabulary is close to chance**: best cells are Fable high effort (1.06 vs 1.09 at 64
   trials, p = 0.004; 1.05 vs 1.09 at 192, p = 0.007, 24 answered) and GPT Astra low effort (1.06 vs
@@ -77,7 +76,7 @@ head.
 
 | Session | In the prompt, no tools | With tools |
 |---|---|---|
-| `t15_small` | 0.15 low effort; 0.09 high effort (first 24) | **0.06** (75% of sentences exact) |
+| `t15_small` | 0.15 low effort; 0.08 high effort | **0.06** (75% of sentences exact) |
 | `t15_open` | 1.09 low effort (chance 1.11) | **0.54** (chance 0.93; 8% exact) |
 
 It built word-level HMM / neural acoustic models with a bigram language model for `t15_small`, and
@@ -90,39 +89,58 @@ stayed inside the task folder (`icbench/agentic.py` audits the log).
 The result also shows the 12-component input does carry open-vocabulary information that the
 models did not use in context and that the GRU-CTC reference (0.85) missed.
 
-### In between: code as a viewer and calculator only
+### In between: code to handle the data, but no machine learning
 
-GPT Astra in Codex again, but told that it is the decoder: code may only print trials and compute
-simple descriptive numbers on segments it picks by hand (numpy only, no model fitting, no script
-that outputs words), and it must type the sentences itself (`--rules lite`). The command logs show
-it kept to this: it printed compressed trials, chose word boundaries by eye, compared hand-picked
-segment means, and wrote the predictions through its file-edit tool.
+GPT Astra in Codex again, but told that it is the decoder. Code may transform and summarise the
+data (numpy only); nothing may be fitted or trained to predict words, no program may assign words
+to test trials, and it must type the sentences itself. Two versions:
 
-| Dataset | In the prompt (API) | Viewer/calculator only | Full tools |
-|---|---|---|---|
-| `t15_small`, 192 trials | 0.15 low; 0.09 high (first 24) | 0.15 (58% exact; 0.15 on the first 24) | 0.06 |
-| `t15_open`, 192 trials | 1.09 low (chance) | 0.74 (chance 0.99) | 0.54 |
-| `t16_small`, 72 trials | not run (Fable: 0.79-0.87) | 0.78 (chance 0.93) | 0.28 |
+- **Summary only** (`--rules lite`): the files hold the same 12-component summary the prompt uses;
+  code may print trials and compare segments it picks by hand.
+- **Full recording** (`--rules manipulate --full-recording`): the files also hold every electrode
+  and both features at the original 20 ms steps; any label-free manipulation is allowed.
 
-Being able to look at the data selectively does not beat plain in-prompt decoding on the easy
-session, but it lifts open vocabulary from chance to 0.74. The large gains come from fitted models.
+| Dataset | In the prompt (API) | Summary only | Full recording | Full tools (trains a decoder) |
+|---|---|---|---|---|
+| `t15_small`, 192 trials | 0.15 low; 0.08 high | 0.15 | 0.13 (67% exact) | 0.06 |
+| `t15_open`, 192 trials | 1.09 low; 1.00 high (via Codex, no tools) | 0.74 | 0.61 | 0.54 |
+| `t16_small`, 72 trials | 0.59 low; 0.42 high (via Codex, no tools) | 0.78 | 0.43 | 0.28 |
+
+![Word error rate by how much the model may do with the data](assets/figures/2_tools_ladder.png)
+
+With the full recording, the no-machine-learning condition beats the summary-only version on all
+three datasets. Against plain in-prompt decoding at the same (high) effort it is no better on the
+two 50-word sets (0.13 vs 0.08, 0.43 vs 0.42); its clear gain is on open vocabulary, where the
+prompt alone stays at WER 1.0 even at high effort. (The figure uses high effort for every bar.) The command
+logs show what it did: printed stretches of the recording, chose word boundaries and reference
+examples by hand, removed baselines, restricted to particular arrays or to spike-band power, and
+printed tables of correlations between its chosen test segments and its chosen labelled segments.
+That is template matching carried out by the model: no parameters are learned and no code picks a
+word, but whether it counts as "no machine learning" is a judgement call. On `t15_open` it found
+118 of 190 words that occur in the labelled sentences and 9 of 108 that do not (summary only: 91
+and 4; trained decoder: 140 and 12).
+
+Giving the model more in the prompt did not help in the same way: through Codex without tools, 24
+components or 26 levels in place of 12 components and 10 levels made GPT Astra worse at low effort
+(WER 0.37 and 0.24 against 0.19) and at high effort on `t16_small` (0.53 with 24 components, 0.59
+with 40, against 0.42), although a classical decoder improves on the richer input
+(`icbench/lossiness.py`: 0.54 -> 0.34 with 24 components).
 
 ### Broader data
 
 More participants, inner speech, other days, a cross-day split and image input. "With tools" is one
-Codex run per dataset (GPT Astra, high effort); "in the prompt" is Fable 5.2, text input, the only
-in-prompt model run here (GPT Astra's API was paused). WER, duration-matched chance in brackets.
+Codex run per dataset (GPT Astra, high effort); "in the prompt" is text input at low effort unless noted. WER, duration-matched chance in brackets.
 
-| Dataset | Labelled trials | With tools | Fable in the prompt |
-|---|---|---|---|
-| T16, attempted, 50-word (`t16_small`) | 72 | 0.28 (0.81) | 0.87 low, 0.79 high (0.91-0.92) |
-| T12 inner speech, 50-word (`t12_inner`) | 152 | 0.47 (0.88) | 0.88 low (0.97) |
-| T15 inner speech, 50-word (`t15_inner`) | 152 | 0.74 (0.87) | 0.95 low (1.02) |
-| T15 April 2024, ~100 words (`t15_2024`) | 192 | 0.11 (0.74) | 0.86 low (0.95) |
-| T15 day 2, open vocabulary (`t15_day2`) | 192 | 0.49 (0.91) | not run |
-| T15 January 2025, open vocabulary (`t15_2025`) | 115 | 0.61 (0.95) | not run |
-| T12 Willett, open vocabulary (`t12_open`) | 192 | 0.83 (0.99) | not run |
-| Cross-day: labelled 1 Sept, test 3 Sept 2023 (`t15_sep01>t15_open`) | 192 | 0.39 (0.88) | not run |
+| Dataset | Labelled trials | With tools | Fable in the prompt | GPT Astra in the prompt |
+|---|---|---|---|---|
+| T16, attempted, 50-word (`t16_small`) | 72 | 0.28 (0.81) | 0.87 low, 0.79 high (0.91-0.92) | 0.59 (0.91) |
+| T12 inner speech, 50-word (`t12_inner`) | 152 | 0.47 (0.88) | 0.88 low (0.97) | 0.72 (0.93) |
+| T15 inner speech, 50-word (`t15_inner`) | 152 | 0.74 (0.87) | 0.95 low (1.02) | not run |
+| T15 April 2024, ~100 words (`t15_2024`) | 192 | 0.11 (0.74) | 0.86 low (0.95) | not run |
+| T15 day 2, open vocabulary (`t15_day2`) | 192 | 0.49 (0.91) | not run | not run |
+| T15 January 2025, open vocabulary (`t15_2025`) | 115 | 0.61 (0.95) | not run | not run |
+| T12 Willett, open vocabulary (`t12_open`) | 192 | 0.83 (0.99) | not run | not run |
+| Cross-day: labelled 1 Sept, test 3 Sept 2023 (`t15_sep01>t15_open`) | 192 | 0.39 (0.88) | not run | not run |
 
 Every cell is above chance (p <= 0.006). With tools the agent builds a usable decoder for a second
 participant and for later days, a weak one for inner speech, and barely anything for T12's faster
@@ -151,8 +169,8 @@ scores are in `results/cells/`. Regenerate with `uv run python -m icbench.report
   (category "cyber"), Fable 5.2 had 13 calls end at the output limit, one GPT Astra call was cut off.
 - The Claude models were told a 40k-token budget per call after the first high-effort cell ran to
   the limit; cells finished before that change ran without it.
-- GPT Astra's high-effort cells at 64 and 192 trials cover only the first 24 held-out sentences, and
-  its open-vocabulary cell at 192 trials 32 of 48 (two calls hit a rate limit).
+- GPT Astra's open-vocabulary cell at 192 trials covers 32 of 48 sentences (two calls hit a rate
+  limit).
 - The broader-data tools results are one agent run each, and the agent picks its own method, so
   they carry run-to-run variance that is not measured here.
 - Not run: GPT Astra in the prompt on the broader datasets or at high effort on open vocabulary
