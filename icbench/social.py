@@ -386,9 +386,46 @@ def data_norm(s: str) -> str:
     return normalise(s)
 
 
+def errors_chart() -> None:
+    """What predicts which wrong word is decoded (results/errors.json, from icbench.errors)."""
+    f = ROOT / "results/errors.json"
+    if not f.exists():
+        return
+    g = json.loads(f.read_text())["groups"]
+    rows = [("GPT Astra, in the prompt", "GPT Astra, in the prompt", True), ("Other models above chance, in the prompt", "Other models above chance", True),
+            ("Decoders the models trained (tools)", "Decoders trained with tools", True), ("Models at chance, in the prompt", "Models at chance", False),
+            ("Activity withheld (guessing)", "Activity withheld (guessing)", False)]
+    panels = [("sound", "Sounds alike", (-0.3, 0.6)), ("meaning", "Similar meaning", (-0.3, 0.6)), ("context", "Fits the next word", (0, 6))]
+    fig = plt.figure(figsize=(8, 4.5), dpi=200)
+    frame(fig, "Wrong words fit the sentence and sound like the right word",
+          "What predicts which wrong word comes out. 50-word session; bars are 95% intervals.",
+          "Choice among the 49 other words; log-odds per standard deviation. Sound: phoneme features. Meaning: GloVe. Data: Card et al. 2024.")
+    for n, (key, title, lim) in enumerate(panels):
+        ax = fig.add_axes([0.30 + 0.235 * n, 0.21, 0.20, 0.52])
+        ax.axvline(0, color=MUTED, lw=1)
+        for y, (name, label, neural) in enumerate(rows):
+            c = g[name]["choice"][key]
+            col = BLUE if neural else MUTED
+            ax.plot([c["lo"], c["hi"]], [y, y], color=col, lw=2, alpha=0.55, solid_capstyle="round")
+            ax.plot(c["beta"], y, "o", ms=7, mfc=col if neural else SURFACE, mec=col, mew=1.6)
+            if n == 0:
+                fig.text(0.275, ax.get_position().y1 - (y + 0.5) / len(rows) * ax.get_position().height, label, fontsize=9, color=INK if neural else INK2, ha="right", va="center")
+        ax.set_ylim(len(rows) - 0.5, -0.5)
+        ax.set_xlim(*lim)
+        ax.set_yticks([])
+        ax.set_title(title, fontsize=9.5, fontweight="bold", color=INK2, loc="left", pad=8)
+        ax.tick_params(axis="x", labelsize=8, colors=MUTED, length=0)
+        ax.grid(axis="x", color=GRID, lw=0.8)
+        ax.set_axisbelow(True)
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+    fig.savefig(OUT / "8_errors.png")
+    plt.close(fig)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    learning_curve(); ladder(); examples(); models(); tools_both(); models_tools(); leaderboard()
+    learning_curve(); ladder(); examples(); models(); tools_both(); models_tools(); leaderboard(); errors_chart()
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 

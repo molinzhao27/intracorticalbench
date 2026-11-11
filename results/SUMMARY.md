@@ -111,6 +111,14 @@ Reasoning is hidden, so the evidence is indirect.
   for the rarest, 95% for the commonest. Its confusions are the ones trained decoders make here
   (do/tell, they/you, not/that).
 
+- Its mistakes are those of a decoder with a language prior. Nearly every wrong word still forms a
+  sentence like the labelled ones (99% fit a neighbouring word, 58% for random words). On top of
+  that there is a sound-alike tilt: 21% of wrong words are among the 5 closest-sounding vocabulary
+  words (12% expected), the same as for decoders the models trained with tools (25% against 14%) and
+  absent for models at chance (13% against 12%). There is no meaning tilt: BERTScore of wrong
+  sentences is high, but equally so for runs with the activity withheld, so it reflects fluent
+  guessing. Details: README "What the mistakes look like", `results/errors.json`, `8_errors.png`.
+
 **Handing the method to the others.** GPT Astra's description, as six general steps with no
 word-specific cues, added to the prompt (word error rate without -> with):
 

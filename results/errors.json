@@ -1,0 +1,1416 @@
+{
+ "about": {
+  "data": "t15_small, cells with 16-192 labelled trials. An event is one substituted word in a word-level alignment of prediction and reference.",
+  "sound": "Edit distance between phoneme strings (CMUdict) where swapping two phonemes costs the share of articulatory features (panphon) that differ, divided by the longer length. sound_plain: every swap costs 1.",
+  "meaning": "Cosine similarity of GloVe 6B 300d vectors.",
+  "top5": "Share of events whose decoded word is among the 5 vocabulary words closest to the said word.",
+  "nulls": "Each wrong word redrawn at random. frequency: from the group's own substituted-in words. plausible: in proportion to the word's frequency in the labelled sentences and its fit to the neighbouring decoded words.",
+  "choice": "Conditional logit over the other vocabulary words; beta per standard deviation of the predictor (context: per neighbouring word pair seen in the labelled sentences). 95% interval from resampling sentences.",
+  "sentences": "Wrong sentences against copies whose wrong words are redrawn at random (100 redraws, up to 400 sentences per group). BERTScore F1: roberta-large, rescaled with baseline."
+ },
+ "vocabulary": [
+  "am",
+  "are",
+  "bad",
+  "bring",
+  "clean",
+  "closer",
+  "comfortable",
+  "coming",
+  "computer",
+  "do",
+  "faith",
+  "family",
+  "feel",
+  "glasses",
+  "going",
+  "good",
+  "goodbye",
+  "have",
+  "hello",
+  "help",
+  "here",
+  "hope",
+  "how",
+  "hungry",
+  "i",
+  "is",
+  "it",
+  "like",
+  "music",
+  "my",
+  "need",
+  "no",
+  "not",
+  "nurse",
+  "okay",
+  "outside",
+  "please",
+  "right",
+  "success",
+  "tell",
+  "that",
+  "they",
+  "thirsty",
+  "tired",
+  "up",
+  "very",
+  "what",
+  "where",
+  "yes",
+  "you"
+ ],
+ "groups": {
+  "GPT Astra, in the prompt": {
+   "cells": 13,
+   "events": 459,
+   "edits": {
+    "wrong_sentences": 291,
+    "substitutions": 502,
+    "deletions": 42,
+    "insertions": 45,
+    "outside_vocabulary": 43
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.211,
+     "expected_frequency": 0.12,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.176,
+     "p_plausible": 0.016
+    },
+    "sound_plain": {
+     "top5": 0.17,
+     "expected_frequency": 0.104,
+     "p_frequency": 0.001,
+     "expected_plausible": 0.118,
+     "p_plausible": 0.0005
+    },
+    "meaning": {
+     "top5": 0.268,
+     "expected_frequency": 0.173,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.221,
+     "p_plausible": 0.004
+    },
+    "fits_neighbours": 0.989,
+    "distinct_pairs": {
+     "n": 202,
+     "sound_top5": 0.193,
+     "meaning_top5": 0.173,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.35,
+     "lo": 0.199,
+     "hi": 0.47,
+     "odds": 1.42
+    },
+    "meaning": {
+     "beta": 0.065,
+     "lo": -0.064,
+     "hi": 0.223,
+     "odds": 1.07
+    },
+    "length": {
+     "beta": 0.285,
+     "lo": 0.065,
+     "hi": 0.57,
+     "odds": 1.33
+    },
+    "frequency": {
+     "beta": 0.399,
+     "lo": 0.285,
+     "hi": 0.518,
+     "odds": 1.49
+    },
+    "context": {
+     "beta": 3.29,
+     "lo": 3.005,
+     "hi": 3.615,
+     "odds": 26.86
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 257,
+      "actual": 0.543,
+      "random_words": 0.6,
+      "z": -6.12,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 257,
+      "actual": 0.519,
+      "random_words": 0.386,
+      "z": 26.17,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 257,
+      "actual": 0.543,
+      "random_words": 0.573,
+      "z": -4.0,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 257,
+      "actual": 0.519,
+      "random_words": 0.448,
+      "z": 13.57,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 25,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "bad",
+     "decoded": "good",
+     "n": 18,
+     "sound_rank": 6,
+     "meaning_rank": 1
+    },
+    {
+     "said": "up",
+     "decoded": "it",
+     "n": 18,
+     "sound_rank": 2,
+     "meaning_rank": 4
+    },
+    {
+     "said": "success",
+     "decoded": "computer",
+     "n": 12,
+     "sound_rank": 14,
+     "meaning_rank": 38
+    },
+    {
+     "said": "that",
+     "decoded": "not",
+     "n": 12,
+     "sound_rank": 2,
+     "meaning_rank": 3
+    },
+    {
+     "said": "that",
+     "decoded": "it",
+     "n": 11,
+     "sound_rank": 25,
+     "meaning_rank": 2
+    },
+    {
+     "said": "right",
+     "decoded": "good",
+     "n": 11,
+     "sound_rank": 22,
+     "meaning_rank": 7
+    },
+    {
+     "said": "not",
+     "decoded": "good",
+     "n": 9,
+     "sound_rank": 8,
+     "meaning_rank": 15
+    },
+    {
+     "said": "tell",
+     "decoded": "do",
+     "n": 8,
+     "sound_rank": 28,
+     "meaning_rank": 2
+    },
+    {
+     "said": "right",
+     "decoded": "hungry",
+     "n": 7,
+     "sound_rank": 38,
+     "meaning_rank": 44
+    },
+    {
+     "said": "feel",
+     "decoded": "do",
+     "n": 7,
+     "sound_rank": 30,
+     "meaning_rank": 5
+    },
+    {
+     "said": "closer",
+     "decoded": "music",
+     "n": 6,
+     "sound_rank": 5,
+     "meaning_rank": 40
+    }
+   ]
+  },
+  "Other models above chance, in the prompt": {
+   "cells": 24,
+   "events": 2844,
+   "edits": {
+    "wrong_sentences": 1055,
+    "substitutions": 2847,
+    "deletions": 237,
+    "insertions": 400,
+    "outside_vocabulary": 3
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.151,
+     "expected_frequency": 0.126,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.131,
+     "p_plausible": 0.0005
+    },
+    "sound_plain": {
+     "top5": 0.145,
+     "expected_frequency": 0.107,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.118,
+     "p_plausible": 0.0005
+    },
+    "meaning": {
+     "top5": 0.192,
+     "expected_frequency": 0.151,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.172,
+     "p_plausible": 0.001
+    },
+    "fits_neighbours": 0.999,
+    "distinct_pairs": {
+     "n": 759,
+     "sound_top5": 0.123,
+     "meaning_top5": 0.138,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.194,
+     "lo": 0.123,
+     "hi": 0.263,
+     "odds": 1.21
+    },
+    "meaning": {
+     "beta": -0.006,
+     "lo": -0.068,
+     "hi": 0.057,
+     "odds": 0.99
+    },
+    "length": {
+     "beta": 0.028,
+     "lo": -0.057,
+     "hi": 0.119,
+     "odds": 1.03
+    },
+    "frequency": {
+     "beta": 0.194,
+     "lo": 0.139,
+     "hi": 0.243,
+     "odds": 1.21
+    },
+    "context": {
+     "beta": 4.167,
+     "lo": 4.012,
+     "hi": 4.322,
+     "odds": 64.55
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 0.802,
+      "random_words": 0.836,
+      "z": -3.31,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.398,
+      "random_words": 0.239,
+      "z": 39.02,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 0.817,
+      "random_words": 0.826,
+      "z": -1.05,
+      "p": 0.198
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.398,
+      "random_words": 0.316,
+      "z": 18.3,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "they",
+     "decoded": "you",
+     "n": 30,
+     "sound_rank": 28,
+     "meaning_rank": 10
+    },
+    {
+     "said": "i",
+     "decoded": "my",
+     "n": 29,
+     "sound_rank": 8,
+     "meaning_rank": 2
+    },
+    {
+     "said": "that",
+     "decoded": "is",
+     "n": 29,
+     "sound_rank": 29,
+     "meaning_rank": 11
+    },
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 28,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "very",
+     "decoded": "not",
+     "n": 27,
+     "sound_rank": 32,
+     "meaning_rank": 6
+    },
+    {
+     "said": "it",
+     "decoded": "not",
+     "n": 22,
+     "sound_rank": 13,
+     "meaning_rank": 4
+    },
+    {
+     "said": "bad",
+     "decoded": "good",
+     "n": 21,
+     "sound_rank": 6,
+     "meaning_rank": 1
+    },
+    {
+     "said": "tell",
+     "decoded": "hope",
+     "n": 21,
+     "sound_rank": 27,
+     "meaning_rank": 21
+    },
+    {
+     "said": "you",
+     "decoded": "do",
+     "n": 21,
+     "sound_rank": 1,
+     "meaning_rank": 2
+    },
+    {
+     "said": "is",
+     "decoded": "not",
+     "n": 20,
+     "sound_rank": 20,
+     "meaning_rank": 6
+    },
+    {
+     "said": "are",
+     "decoded": "is",
+     "n": 20,
+     "sound_rank": 3,
+     "meaning_rank": 4
+    },
+    {
+     "said": "you",
+     "decoded": "nurse",
+     "n": 20,
+     "sound_rank": 21,
+     "meaning_rank": 48
+    }
+   ]
+  },
+  "Models at chance, in the prompt": {
+   "cells": 53,
+   "events": 8838,
+   "edits": {
+    "wrong_sentences": 2543,
+    "substitutions": 8842,
+    "deletions": 758,
+    "insertions": 1216,
+    "outside_vocabulary": 4
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.13,
+     "expected_frequency": 0.124,
+     "p_frequency": 0.05,
+     "expected_plausible": 0.126,
+     "p_plausible": 0.1054
+    },
+    "sound_plain": {
+     "top5": 0.127,
+     "expected_frequency": 0.104,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.112,
+     "p_plausible": 0.0005
+    },
+    "meaning": {
+     "top5": 0.168,
+     "expected_frequency": 0.144,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.162,
+     "p_plausible": 0.0365
+    },
+    "fits_neighbours": 1.0,
+    "distinct_pairs": {
+     "n": 1135,
+     "sound_top5": 0.111,
+     "meaning_top5": 0.122,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.057,
+     "lo": 0.018,
+     "hi": 0.097,
+     "odds": 1.06
+    },
+    "meaning": {
+     "beta": -0.146,
+     "lo": -0.189,
+     "hi": -0.106,
+     "odds": 0.86
+    },
+    "length": {
+     "beta": -0.028,
+     "lo": -0.074,
+     "hi": 0.012,
+     "odds": 0.97
+    },
+    "frequency": {
+     "beta": 0.105,
+     "lo": 0.069,
+     "hi": 0.137,
+     "odds": 1.11
+    },
+    "context": {
+     "beta": 5.283,
+     "lo": 5.124,
+     "hi": 5.461,
+     "odds": 197.02
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 1.017,
+      "random_words": 1.032,
+      "z": -1.47,
+      "p": 0.069
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.289,
+      "random_words": 0.12,
+      "z": 39.72,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 0.998,
+      "random_words": 0.989,
+      "z": 1.26,
+      "p": 0.921
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.296,
+      "random_words": 0.217,
+      "z": 18.42,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "i",
+     "decoded": "my",
+     "n": 118,
+     "sound_rank": 8,
+     "meaning_rank": 2
+    },
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 80,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "they",
+     "decoded": "i",
+     "n": 78,
+     "sound_rank": 23,
+     "meaning_rank": 11
+    },
+    {
+     "said": "they",
+     "decoded": "you",
+     "n": 69,
+     "sound_rank": 28,
+     "meaning_rank": 10
+    },
+    {
+     "said": "i",
+     "decoded": "they",
+     "n": 68,
+     "sound_rank": 10,
+     "meaning_rank": 8
+    },
+    {
+     "said": "comfortable",
+     "decoded": "hungry",
+     "n": 62,
+     "sound_rank": 6,
+     "meaning_rank": 41
+    },
+    {
+     "said": "is",
+     "decoded": "not",
+     "n": 61,
+     "sound_rank": 20,
+     "meaning_rank": 6
+    },
+    {
+     "said": "do",
+     "decoded": "my",
+     "n": 59,
+     "sound_rank": 18,
+     "meaning_rank": 18
+    },
+    {
+     "said": "here",
+     "decoded": "hungry",
+     "n": 54,
+     "sound_rank": 40,
+     "meaning_rank": 37
+    },
+    {
+     "said": "very",
+     "decoded": "not",
+     "n": 53,
+     "sound_rank": 32,
+     "meaning_rank": 6
+    },
+    {
+     "said": "have",
+     "decoded": "is",
+     "n": 52,
+     "sound_rank": 27,
+     "meaning_rank": 31
+    },
+    {
+     "said": "they",
+     "decoded": "is",
+     "n": 51,
+     "sound_rank": 38,
+     "meaning_rank": 33
+    }
+   ]
+  },
+  "Activity withheld (guessing)": {
+   "cells": 30,
+   "events": 4682,
+   "edits": {
+    "wrong_sentences": 1350,
+    "substitutions": 4693,
+    "deletions": 343,
+    "insertions": 456,
+    "outside_vocabulary": 11
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.131,
+     "expected_frequency": 0.123,
+     "p_frequency": 0.032,
+     "expected_plausible": 0.123,
+     "p_plausible": 0.0115
+    },
+    "sound_plain": {
+     "top5": 0.11,
+     "expected_frequency": 0.1,
+     "p_frequency": 0.01,
+     "expected_plausible": 0.105,
+     "p_plausible": 0.074
+    },
+    "meaning": {
+     "top5": 0.176,
+     "expected_frequency": 0.151,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.175,
+     "p_plausible": 0.3908
+    },
+    "fits_neighbours": 1.0,
+    "distinct_pairs": {
+     "n": 659,
+     "sound_top5": 0.121,
+     "meaning_top5": 0.14,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.02,
+     "lo": -0.035,
+     "hi": 0.069,
+     "odds": 1.02
+    },
+    "meaning": {
+     "beta": -0.159,
+     "lo": -0.21,
+     "hi": -0.102,
+     "odds": 0.85
+    },
+    "length": {
+     "beta": 0.191,
+     "lo": 0.123,
+     "hi": 0.258,
+     "odds": 1.21
+    },
+    "frequency": {
+     "beta": 0.27,
+     "lo": 0.227,
+     "hi": 0.31,
+     "odds": 1.31
+    },
+    "context": {
+     "beta": 4.619,
+     "lo": 4.436,
+     "hi": 4.806,
+     "odds": 101.4
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 0.946,
+      "random_words": 0.979,
+      "z": -3.36,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.309,
+      "random_words": 0.132,
+      "z": 45.38,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 400,
+      "actual": 0.954,
+      "random_words": 0.961,
+      "z": -0.89,
+      "p": 0.208
+     },
+     "bertscore_f1": {
+      "sentences": 400,
+      "actual": 0.31,
+      "random_words": 0.223,
+      "z": 20.94,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "i",
+     "decoded": "my",
+     "n": 71,
+     "sound_rank": 8,
+     "meaning_rank": 2
+    },
+    {
+     "said": "they",
+     "decoded": "you",
+     "n": 63,
+     "sound_rank": 28,
+     "meaning_rank": 10
+    },
+    {
+     "said": "comfortable",
+     "decoded": "hungry",
+     "n": 63,
+     "sound_rank": 6,
+     "meaning_rank": 41
+    },
+    {
+     "said": "i",
+     "decoded": "they",
+     "n": 62,
+     "sound_rank": 10,
+     "meaning_rank": 8
+    },
+    {
+     "said": "very",
+     "decoded": "have",
+     "n": 50,
+     "sound_rank": 30,
+     "meaning_rank": 17
+    },
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 50,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "here",
+     "decoded": "hungry",
+     "n": 44,
+     "sound_rank": 40,
+     "meaning_rank": 37
+    },
+    {
+     "said": "they",
+     "decoded": "is",
+     "n": 42,
+     "sound_rank": 38,
+     "meaning_rank": 33
+    },
+    {
+     "said": "coming",
+     "decoded": "not",
+     "n": 39,
+     "sound_rank": 38,
+     "meaning_rank": 14
+    },
+    {
+     "said": "feel",
+     "decoded": "not",
+     "n": 38,
+     "sound_rank": 13,
+     "meaning_rank": 7
+    },
+    {
+     "said": "is",
+     "decoded": "are",
+     "n": 37,
+     "sound_rank": 4,
+     "meaning_rank": 4
+    },
+    {
+     "said": "do",
+     "decoded": "my",
+     "n": 37,
+     "sound_rank": 18,
+     "meaning_rank": 18
+    }
+   ]
+  },
+  "Decoders the models trained (tools)": {
+   "cells": 12,
+   "events": 576,
+   "edits": {
+    "wrong_sentences": 344,
+    "substitutions": 576,
+    "deletions": 106,
+    "insertions": 47,
+    "outside_vocabulary": 0
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.248,
+     "expected_frequency": 0.139,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.153,
+     "p_plausible": 0.0005
+    },
+    "sound_plain": {
+     "top5": 0.203,
+     "expected_frequency": 0.106,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.111,
+     "p_plausible": 0.0005
+    },
+    "meaning": {
+     "top5": 0.269,
+     "expected_frequency": 0.201,
+     "p_frequency": 0.0005,
+     "expected_plausible": 0.208,
+     "p_plausible": 0.0005
+    },
+    "fits_neighbours": 0.913,
+    "distinct_pairs": {
+     "n": 273,
+     "sound_top5": 0.194,
+     "meaning_top5": 0.19,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.372,
+     "lo": 0.237,
+     "hi": 0.52,
+     "odds": 1.45
+    },
+    "meaning": {
+     "beta": 0.082,
+     "lo": -0.044,
+     "hi": 0.234,
+     "odds": 1.09
+    },
+    "length": {
+     "beta": 0.263,
+     "lo": 0.034,
+     "hi": 0.51,
+     "odds": 1.3
+    },
+    "frequency": {
+     "beta": 0.618,
+     "lo": 0.494,
+     "hi": 0.727,
+     "odds": 1.85
+    },
+    "context": {
+     "beta": 2.009,
+     "lo": 1.799,
+     "hi": 2.212,
+     "odds": 7.45
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 299,
+      "actual": 0.511,
+      "random_words": 0.572,
+      "z": -8.04,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 299,
+      "actual": 0.426,
+      "random_words": 0.353,
+      "z": 14.83,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 299,
+      "actual": 0.511,
+      "random_words": 0.562,
+      "z": -7.23,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 299,
+      "actual": 0.426,
+      "random_words": 0.392,
+      "z": 6.61,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "tell",
+     "decoded": "do",
+     "n": 20,
+     "sound_rank": 28,
+     "meaning_rank": 2
+    },
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 11,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "i",
+     "decoded": "are",
+     "n": 11,
+     "sound_rank": 1,
+     "meaning_rank": 31
+    },
+    {
+     "said": "that",
+     "decoded": "not",
+     "n": 10,
+     "sound_rank": 2,
+     "meaning_rank": 3
+    },
+    {
+     "said": "right",
+     "decoded": "what",
+     "n": 9,
+     "sound_rank": 11,
+     "meaning_rank": 4
+    },
+    {
+     "said": "bad",
+     "decoded": "good",
+     "n": 9,
+     "sound_rank": 6,
+     "meaning_rank": 1
+    },
+    {
+     "said": "it",
+     "decoded": "is",
+     "n": 9,
+     "sound_rank": 1,
+     "meaning_rank": 3
+    },
+    {
+     "said": "you",
+     "decoded": "are",
+     "n": 9,
+     "sound_rank": 3,
+     "meaning_rank": 31
+    },
+    {
+     "said": "how",
+     "decoded": "i",
+     "n": 8,
+     "sound_rank": 21,
+     "meaning_rank": 12
+    },
+    {
+     "said": "right",
+     "decoded": "not",
+     "n": 7,
+     "sound_rank": 10,
+     "meaning_rank": 6
+    },
+    {
+     "said": "up",
+     "decoded": "hope",
+     "n": 7,
+     "sound_rank": 25,
+     "meaning_rank": 30
+    },
+    {
+     "said": "they",
+     "decoded": "you",
+     "n": 7,
+     "sound_rank": 28,
+     "meaning_rank": 10
+    }
+   ]
+  },
+  "Classical: GRU-CTC, words": {
+   "cells": 3,
+   "events": 173,
+   "edits": {
+    "wrong_sentences": 127,
+    "substitutions": 173,
+    "deletions": 304,
+    "insertions": 3,
+    "outside_vocabulary": 0
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.121,
+     "expected_frequency": 0.094,
+     "p_frequency": 0.1294,
+     "expected_plausible": 0.13,
+     "p_plausible": 0.6817
+    },
+    "sound_plain": {
+     "top5": 0.098,
+     "expected_frequency": 0.091,
+     "p_frequency": 0.4073,
+     "expected_plausible": 0.103,
+     "p_plausible": 0.6207
+    },
+    "meaning": {
+     "top5": 0.145,
+     "expected_frequency": 0.143,
+     "p_frequency": 0.5087,
+     "expected_plausible": 0.161,
+     "p_plausible": 0.7491
+    },
+    "fits_neighbours": 0.896,
+    "distinct_pairs": {
+     "n": 132,
+     "sound_top5": 0.144,
+     "meaning_top5": 0.129,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.094,
+     "lo": -0.178,
+     "hi": 0.3,
+     "odds": 1.1
+    },
+    "meaning": {
+     "beta": -0.204,
+     "lo": -0.395,
+     "hi": 0.026,
+     "odds": 0.82
+    },
+    "length": {
+     "beta": -0.007,
+     "lo": -0.301,
+     "hi": 0.331,
+     "odds": 0.99
+    },
+    "frequency": {
+     "beta": 0.702,
+     "lo": 0.542,
+     "hi": 0.865,
+     "odds": 2.02
+    },
+    "context": {
+     "beta": 1.154,
+     "lo": 0.812,
+     "hi": 1.488,
+     "odds": 3.17
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 89,
+      "actual": 0.893,
+      "random_words": 0.899,
+      "z": -0.43,
+      "p": 0.396
+     },
+     "bertscore_f1": {
+      "sentences": 89,
+      "actual": 0.169,
+      "random_words": 0.147,
+      "z": 2.24,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 89,
+      "actual": 0.893,
+      "random_words": 0.873,
+      "z": 1.62,
+      "p": 0.941
+     },
+     "bertscore_f1": {
+      "sentences": 89,
+      "actual": 0.169,
+      "random_words": 0.148,
+      "z": 1.9,
+      "p": 0.04
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "good",
+     "decoded": "hungry",
+     "n": 7,
+     "sound_rank": 45,
+     "meaning_rank": 42
+    },
+    {
+     "said": "comfortable",
+     "decoded": "hungry",
+     "n": 7,
+     "sound_rank": 6,
+     "meaning_rank": 41
+    },
+    {
+     "said": "it",
+     "decoded": "you",
+     "n": 4,
+     "sound_rank": 6,
+     "meaning_rank": 5
+    },
+    {
+     "said": "here",
+     "decoded": "is",
+     "n": 3,
+     "sound_rank": 27,
+     "meaning_rank": 24
+    },
+    {
+     "said": "up",
+     "decoded": "hungry",
+     "n": 3,
+     "sound_rank": 43,
+     "meaning_rank": 40
+    },
+    {
+     "said": "they",
+     "decoded": "faith",
+     "n": 3,
+     "sound_rank": 17,
+     "meaning_rank": 38
+    },
+    {
+     "said": "not",
+     "decoded": "you",
+     "n": 2,
+     "sound_rank": 34,
+     "meaning_rank": 8
+    },
+    {
+     "said": "right",
+     "decoded": "is",
+     "n": 2,
+     "sound_rank": 42,
+     "meaning_rank": 23
+    },
+    {
+     "said": "here",
+     "decoded": "hungry",
+     "n": 2,
+     "sound_rank": 40,
+     "meaning_rank": 37
+    },
+    {
+     "said": "feel",
+     "decoded": "faith",
+     "n": 2,
+     "sound_rank": 18,
+     "meaning_rank": 36
+    },
+    {
+     "said": "very",
+     "decoded": "faith",
+     "n": 2,
+     "sound_rank": 1,
+     "meaning_rank": 38
+    },
+    {
+     "said": "that",
+     "decoded": "they",
+     "n": 2,
+     "sound_rank": 6,
+     "meaning_rank": 4
+    }
+   ]
+  },
+  "Classical: nearest labelled trial": {
+   "cells": 3,
+   "events": 418,
+   "edits": {
+    "wrong_sentences": 144,
+    "substitutions": 418,
+    "deletions": 52,
+    "insertions": 53,
+    "outside_vocabulary": 0
+   },
+   "rank": {
+    "sound": {
+     "top5": 0.151,
+     "expected_frequency": 0.121,
+     "p_frequency": 0.0315,
+     "expected_plausible": 0.121,
+     "p_plausible": 0.01
+    },
+    "sound_plain": {
+     "top5": 0.141,
+     "expected_frequency": 0.102,
+     "p_frequency": 0.006,
+     "expected_plausible": 0.108,
+     "p_plausible": 0.003
+    },
+    "meaning": {
+     "top5": 0.189,
+     "expected_frequency": 0.16,
+     "p_frequency": 0.056,
+     "expected_plausible": 0.147,
+     "p_plausible": 0.002
+    },
+    "fits_neighbours": 1.0,
+    "distinct_pairs": {
+     "n": 238,
+     "sound_top5": 0.155,
+     "meaning_top5": 0.168,
+     "uniform": 0.102
+    }
+   },
+   "choice": {
+    "sound": {
+     "beta": 0.19,
+     "lo": 0.009,
+     "hi": 0.377,
+     "odds": 1.21
+    },
+    "meaning": {
+     "beta": 0.045,
+     "lo": -0.19,
+     "hi": 0.28,
+     "odds": 1.05
+    },
+    "length": {
+     "beta": 0.009,
+     "lo": -0.21,
+     "hi": 0.246,
+     "odds": 1.01
+    },
+    "frequency": {
+     "beta": -0.114,
+     "lo": -0.287,
+     "hi": 0.053,
+     "odds": 0.89
+    },
+    "context": {
+     "beta": 11.557,
+     "lo": 11.419,
+     "hi": 11.731,
+     "odds": 104543.6
+    }
+   },
+   "sentences": {
+    "frequency": {
+     "phoneme_error_rate": {
+      "sentences": 138,
+      "actual": 0.856,
+      "random_words": 0.894,
+      "z": -2.7,
+      "p": 0.01
+     },
+     "bertscore_f1": {
+      "sentences": 138,
+      "actual": 0.332,
+      "random_words": 0.173,
+      "z": 20.69,
+      "p": 0.01
+     }
+    },
+    "plausible": {
+     "phoneme_error_rate": {
+      "sentences": 138,
+      "actual": 0.856,
+      "random_words": 0.879,
+      "z": -2.04,
+      "p": 0.03
+     },
+     "bertscore_f1": {
+      "sentences": 138,
+      "actual": 0.332,
+      "random_words": 0.268,
+      "z": 9.08,
+      "p": 0.01
+     }
+    }
+   },
+   "common": [
+    {
+     "said": "is",
+     "decoded": "it",
+     "n": 7,
+     "sound_rank": 1,
+     "meaning_rank": 1
+    },
+    {
+     "said": "i",
+     "decoded": "they",
+     "n": 7,
+     "sound_rank": 10,
+     "meaning_rank": 8
+    },
+    {
+     "said": "you",
+     "decoded": "they",
+     "n": 6,
+     "sound_rank": 14,
+     "meaning_rank": 14
+    },
+    {
+     "said": "you",
+     "decoded": "not",
+     "n": 6,
+     "sound_rank": 22,
+     "meaning_rank": 13
+    },
+    {
+     "said": "is",
+     "decoded": "not",
+     "n": 6,
+     "sound_rank": 20,
+     "meaning_rank": 6
+    },
+    {
+     "said": "i",
+     "decoded": "my",
+     "n": 5,
+     "sound_rank": 8,
+     "meaning_rank": 2
+    },
+    {
+     "said": "hope",
+     "decoded": "you",
+     "n": 5,
+     "sound_rank": 45,
+     "meaning_rank": 15
+    },
+    {
+     "said": "they",
+     "decoded": "you",
+     "n": 5,
+     "sound_rank": 28,
+     "meaning_rank": 10
+    },
+    {
+     "said": "they",
+     "decoded": "is",
+     "n": 5,
+     "sound_rank": 38,
+     "meaning_rank": 33
+    },
+    {
+     "said": "very",
+     "decoded": "not",
+     "n": 4,
+     "sound_rank": 32,
+     "meaning_rank": 6
+    },
+    {
+     "said": "comfortable",
+     "decoded": "hungry",
+     "n": 4,
+     "sound_rank": 6,
+     "meaning_rank": 41
+    },
+    {
+     "said": "comfortable",
+     "decoded": "thirsty",
+     "n": 4,
+     "sound_rank": 11,
+     "meaning_rank": 48
+    }
+   ]
+  }
+ }
+}

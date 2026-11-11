@@ -174,6 +174,46 @@ clearly above chance (p = 0.0003) while thinking 40 times longer (2k -> 82k toke
 models that were flat at chance stay there, so knowing the method is not what they lack. Fable hit the output limit before answering; the
 answer it gave after being allowed to continue scores 0.59 and is not counted.
 
+### What the mistakes look like
+
+Are the wrong words sound-alikes, meaning-alikes, or neither? Each wrong sentence is aligned with
+the cued one word by word, and every substituted word is one event (459 for GPT Astra over its 13
+cells with 16-192 labelled trials). Runs that had nothing to decode from (models at chance, activity
+withheld) are the control, because grammar alone makes substituted words look somewhat related.
+
+![What predicts which wrong word comes out](assets/figures/8_errors.png)
+
+| Runs | Wrong word among the 5 closest in sound (expected) | ... in meaning (expected) | Sound effect | Meaning effect |
+|---|---|---|---|---|
+| GPT Astra, in the prompt | 21% (12%) | 27% (17%) | +0.35 [+0.20, +0.47] | +0.07 [-0.06, +0.22] |
+| Other models above chance, in the prompt | 15% (13%) | 19% (15%) | +0.19 [+0.12, +0.26] | -0.01 [-0.07, +0.06] |
+| Decoders the models trained with tools | 25% (14%) | 27% (20%) | +0.37 [+0.24, +0.52] | +0.08 [-0.04, +0.23] |
+| Models at chance, in the prompt | 13% (12%) | 17% (14%) | +0.06 [+0.02, +0.10] | -0.15 [-0.19, -0.11] |
+| Activity withheld (guessing) | 13% (12%) | 18% (15%) | +0.02 [-0.04, +0.07] | -0.16 [-0.21, -0.10] |
+
+"Expected" redraws each wrong word from the words those runs substitute in. The effects are from a
+choice model over the 49 other vocabulary words (log-odds per standard deviation, 95% interval)
+that also accounts for word length, word frequency and fit to the neighbouring words.
+
+- **Mostly they are sentence-shaped guesses.** 99% of GPT Astra's wrong words form a word pair
+  with a neighbour that occurs in the labelled sentences (58% for random words), and 76% of its
+  wrong sentences have the right number of words. This is by far the largest effect for every group.
+- **There is a real sound-alike tilt, the same size as in trained decoders.** It is absent when
+  there is nothing to decode from. Examples: that -> not, up -> it, closer -> music. Wrong
+  sentences are also closer in phonemes than the same sentences with random wrong words (phoneme
+  error rate 0.54 against 0.57-0.60), again only for runs with neural information.
+- **No meaning tilt.** Once fit to the sentence is accounted for, similar meaning does not predict
+  the wrong word. BERTScore of the wrong sentences is far above the random-word versions (0.52
+  against 0.39-0.45), but the gap is just as large for runs with the activity withheld (0.31
+  against 0.13-0.22), so it measures fluent guessing, not decoded meaning.
+- 62% of GPT Astra's wrong words are neither close in sound nor in meaning (74% for the guessers),
+  for example you -> they and success -> computer.
+
+So the errors are those of a decoder with a language prior, not of a paraphraser. The sound measure
+is phoneme edit distance with articulatory-feature costs (CMUdict, panphon), meaning is GloVe
+cosine, and a 50-word vocabulary has few true sound-alikes, so the sound effect is small in absolute
+terms. `uv run --extra analysis python -m icbench.errors` reproduces it (`results/errors.json`).
+
 ### With tools (Codex harness)
 
 Same 192 labelled and 48 held-out trials, same 12-component input, but as files in a folder where
