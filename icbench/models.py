@@ -23,6 +23,9 @@ _lock = threading.Lock()
 MODELS = {
     "fable": dict(provider="anthropic", id="claude-fable-5-2", inp=8.0, out=40.0, read=0.20, write=1.25),
     "opus": dict(provider="anthropic", id="claude-opus-5-5", inp=4.0, out=20.0, read=0.20, write=1.25),
+    "sonnet": dict(provider="anthropic", id="claude-sonnet-5-5", inp=2.0, out=10.0, read=0.10, write=1.25),
+    # Haiku 5.5 is 0.10 / 0.50 up to 100k prompt tokens and 0.50 / 2.50 beyond; the higher rate is used for every call here
+    "haiku": dict(provider="anthropic", id="claude-haiku-5-5", inp=0.50, out=2.50, read=0.05, write=1.25),
     # OpenAI pricing page, standard tier; every rate doubles (output x1.5) above 272k input tokens.
     "astra": dict(provider="openai", id="gpt-6-astra", inp=10.0, out=50.0, read=1.0, write=1.25),
 }

@@ -1,0 +1,2642 @@
+{
+ "about": {
+  "data": "t15_small: T15, 2023.08.11, 50-word vocabulary, Card et al. 2024 (Brain-to-Text '25). 48 held-out sentences, one random split.",
+  "metric": "Word error rate (lower is better). `chance` is the duration-matched permutation null for that cell; above_chance means p <= 0.01.",
+  "routes": "in_prompt_curve: provider APIs, 8 held-out trials per request. sweep / zero_shot / hint: one request with all 48 held-out trials.",
+  "cost": "cost_usd is tokens at list price for one pass over the prompt, not what was paid."
+ },
+ "in_prompt_curve": {
+  "GPT Astra": {
+   "low": [
+    {
+     "k": 0,
+     "wer": 1.243,
+     "chance": 1.248,
+     "p": 0.401,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.056
+    },
+    {
+     "k": 16,
+     "wer": 0.645,
+     "chance": 0.895,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.062,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.888
+    },
+    {
+     "k": 64,
+     "wer": 0.308,
+     "chance": 0.779,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.333,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.93
+    },
+    {
+     "k": 192,
+     "wer": 0.154,
+     "chance": 0.74,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.562,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.93
+    }
+   ],
+   "high": [
+    {
+     "k": 0,
+     "wer": 1.098,
+     "chance": 1.102,
+     "p": 0.457,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.051
+    },
+    {
+     "k": 16,
+     "wer": 0.458,
+     "chance": 0.841,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.188,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.893
+    },
+    {
+     "k": 64,
+     "wer": 0.201,
+     "chance": 0.746,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.458,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.902
+    },
+    {
+     "k": 192,
+     "wer": 0.084,
+     "chance": 0.726,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.792,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.958
+    }
+   ]
+  },
+  "Claude Fable 5.2": {
+   "low": [
+    {
+     "k": 0,
+     "wer": 1.229,
+     "chance": 1.233,
+     "p": 0.4681,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.098
+    },
+    {
+     "k": 16,
+     "wer": 0.799,
+     "chance": 0.902,
+     "p": 0.0002,
+     "above_chance": true,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.888
+    },
+    {
+     "k": 64,
+     "wer": 0.752,
+     "chance": 0.873,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.021,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.907
+    },
+    {
+     "k": 192,
+     "wer": 0.678,
+     "chance": 0.899,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.021,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.893
+    }
+   ],
+   "high": [
+    {
+     "k": 0,
+     "wer": 1.061,
+     "chance": 1.065,
+     "p": 0.4482,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.023
+    },
+    {
+     "k": 16,
+     "wer": 0.724,
+     "chance": 0.93,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.883
+    },
+    {
+     "k": 64,
+     "wer": 0.646,
+     "chance": 0.91,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.1,
+     "answered": 40,
+     "n": 48,
+     "withheld_wer": 0.902
+    },
+    {
+     "k": 192,
+     "wer": null,
+     "note": "no answer (output limit)"
+    }
+   ]
+  },
+  "Claude Opus 5.5": {
+   "low": [
+    {
+     "k": 0,
+     "wer": 1.065,
+     "chance": 1.076,
+     "p": 0.2728,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.056
+    },
+    {
+     "k": 16,
+     "wer": 0.916,
+     "chance": 0.939,
+     "p": 0.1036,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.962
+    },
+    {
+     "k": 64,
+     "wer": 0.93,
+     "chance": 0.954,
+     "p": 0.1762,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.932
+    },
+    {
+     "k": 192,
+     "wer": 0.944,
+     "chance": 0.956,
+     "p": 0.3576,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.912
+    }
+   ],
+   "high": [
+    {
+     "k": 0,
+     "wer": 1.185,
+     "chance": 1.197,
+     "p": 0.2547,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 40,
+     "n": 48,
+     "withheld_wer": 1.023
+    },
+    {
+     "k": 16,
+     "wer": 0.838,
+     "chance": 0.929,
+     "p": 0.0001,
+     "above_chance": true,
+     "exact": 0.025,
+     "answered": 40,
+     "n": 48,
+     "withheld_wer": 0.943
+    },
+    {
+     "k": 64,
+     "wer": 0.832,
+     "chance": 0.927,
+     "p": 0.0017,
+     "above_chance": true,
+     "exact": 0.021,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.886
+    },
+    {
+     "k": 192,
+     "wer": 0.864,
+     "chance": 0.925,
+     "p": 0.0165,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.91
+    }
+   ]
+  },
+  "Claude Sonnet 5.5": {
+   "low": [
+    {
+     "k": 0,
+     "wer": 1.178,
+     "chance": 1.169,
+     "p": 0.8154,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.056
+    },
+    {
+     "k": 16,
+     "wer": 0.958,
+     "chance": 0.951,
+     "p": 0.6741,
+     "above_chance": false,
+     "exact": 0.021,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.864
+    },
+    {
+     "k": 64,
+     "wer": 0.977,
+     "chance": 1.015,
+     "p": 0.0355,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.897
+    },
+    {
+     "k": 192,
+     "wer": 1.061,
+     "chance": 1.039,
+     "p": 0.9045,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.921
+    }
+   ],
+   "high": [
+    {
+     "k": 0,
+     "wer": 1.299,
+     "chance": 1.291,
+     "p": 0.8127,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.136
+    },
+    {
+     "k": 16,
+     "wer": 0.935,
+     "chance": 0.944,
+     "p": 0.3393,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.888
+    },
+    {
+     "k": 64,
+     "wer": 0.991,
+     "chance": 0.975,
+     "p": 0.7686,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.949
+    },
+    {
+     "k": 192,
+     "wer": 0.953,
+     "chance": 0.964,
+     "p": 0.3497,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.958
+    }
+   ]
+  },
+  "Claude Haiku 5.5": {
+   "low": [
+    {
+     "k": 0,
+     "wer": 1.136,
+     "chance": 1.134,
+     "p": 0.6798,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.178
+    },
+    {
+     "k": 16,
+     "wer": 0.893,
+     "chance": 0.892,
+     "p": 0.5422,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.893
+    },
+    {
+     "k": 64,
+     "wer": 0.995,
+     "chance": 0.965,
+     "p": 0.9254,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.93
+    },
+    {
+     "k": 192,
+     "wer": 1.014,
+     "chance": 1.05,
+     "p": 0.0807,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.902
+    }
+   ],
+   "high": [
+    {
+     "k": 0,
+     "wer": 1.126,
+     "chance": 1.101,
+     "p": 0.9989,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 1.178
+    },
+    {
+     "k": 16,
+     "wer": 0.864,
+     "chance": 0.881,
+     "p": 0.2462,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.916
+    },
+    {
+     "k": 64,
+     "wer": 0.902,
+     "chance": 0.885,
+     "p": 0.8036,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.967
+    },
+    {
+     "k": 192,
+     "wer": 0.958,
+     "chance": 0.905,
+     "p": 0.9895,
+     "above_chance": false,
+     "exact": 0.0,
+     "answered": 48,
+     "n": 48,
+     "withheld_wer": 0.93
+    }
+   ]
+  }
+ },
+ "sweep": {
+  "GPT Astra": {
+   "low": {
+    "wer": 0.192,
+    "chance": 0.739,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.521,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 15046,
+    "reasoning_tokens": 14628,
+    "cost_usd": 3.084
+   },
+   "medium": {
+    "wer": 0.14,
+    "chance": 0.732,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.562,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 21477,
+    "reasoning_tokens": 21059,
+    "cost_usd": 3.405
+   },
+   "high": {
+    "wer": 0.107,
+    "chance": 0.722,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.667,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 25741,
+    "reasoning_tokens": 25324,
+    "cost_usd": 3.597
+   },
+   "xhigh": {
+    "wer": 0.126,
+    "chance": 0.729,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.646,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 45483,
+    "reasoning_tokens": 45064,
+    "cost_usd": 4.606
+   },
+   "max": {
+    "wer": 0.089,
+    "chance": 0.717,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.75,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 58270,
+    "reasoning_tokens": 57854,
+    "cost_usd": 5.245
+   }
+  },
+  "gpt-6.1-sol": {
+   "low": {
+    "wer": 0.556,
+    "chance": 0.885,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.188,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4391,
+    "reasoning_tokens": 3950,
+    "cost_usd": 0.51
+   },
+   "medium": {
+    "wer": 0.575,
+    "chance": 0.884,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.208,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 19193,
+    "reasoning_tokens": 18759,
+    "cost_usd": 0.654
+   },
+   "high": {
+    "wer": 0.533,
+    "chance": 0.862,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.208,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 79419,
+    "reasoning_tokens": 78985,
+    "cost_usd": 1.261
+   },
+   "xhigh": {
+    "wer": 0.416,
+    "chance": 0.832,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.188,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 36965,
+    "reasoning_tokens": 36531,
+    "cost_usd": 0.85
+   },
+   "max": {
+    "wer": 0.421,
+    "chance": 0.827,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.292,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 97317,
+    "reasoning_tokens": 96892,
+    "cost_usd": 1.44
+   }
+  },
+  "gpt-6.1-terra": {
+   "low": {
+    "wer": 0.762,
+    "chance": 0.931,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.062,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 423,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.233
+   },
+   "medium": {
+    "wer": 0.734,
+    "chance": 0.939,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.021,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 475,
+    "reasoning_tokens": 42,
+    "cost_usd": 0.233
+   },
+   "high": {
+    "wer": 0.72,
+    "chance": 0.93,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.021,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 476,
+    "reasoning_tokens": 46,
+    "cost_usd": 0.233
+   },
+   "xhigh": {
+    "wer": 0.682,
+    "chance": 0.89,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 3974,
+    "reasoning_tokens": 3553,
+    "cost_usd": 0.253
+   },
+   "max": {
+    "wer": 0.575,
+    "chance": 0.854,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.062,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 42029,
+    "reasoning_tokens": 41611,
+    "cost_usd": 0.443
+   }
+  },
+  "gpt-6-sol": {
+   "low": {
+    "wer": 0.967,
+    "chance": 0.98,
+    "p": 0.3031,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 490,
+    "reasoning_tokens": 61,
+    "cost_usd": 0.466
+   },
+   "medium": {
+    "wer": 0.841,
+    "chance": 0.911,
+    "p": 0.005,
+    "above_chance": true,
+    "exact": 0.021,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 8025,
+    "reasoning_tokens": 7609,
+    "cost_usd": 0.546
+   },
+   "high": {
+    "wer": 0.85,
+    "chance": 0.913,
+    "p": 0.0065,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 39023,
+    "reasoning_tokens": 38624,
+    "cost_usd": 0.851
+   },
+   "xhigh": {
+    "wer": 0.818,
+    "chance": 0.903,
+    "p": 0.0002,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 48877,
+    "reasoning_tokens": 48474,
+    "cost_usd": 0.954
+   },
+   "max": {
+    "wer": 0.822,
+    "chance": 0.92,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 58887,
+    "reasoning_tokens": 58479,
+    "cost_usd": 1.054
+   }
+  },
+  "gpt-6-luna": {
+   "low": {
+    "wer": 1.033,
+    "chance": 1.047,
+    "p": 0.3067,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 432,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.023
+   },
+   "medium": {
+    "wer": 0.995,
+    "chance": 1.014,
+    "p": 0.1694,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 414,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.023
+   },
+   "high": {
+    "wer": 1.075,
+    "chance": 1.072,
+    "p": 0.6039,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 3237,
+    "reasoning_tokens": 2803,
+    "cost_usd": 0.025
+   },
+   "xhigh": {
+    "wer": 1.0,
+    "chance": 0.945,
+    "p": 0.9893,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 14269,
+    "reasoning_tokens": 13853,
+    "cost_usd": 0.03
+   },
+   "max": {
+    "wer": 0.953,
+    "chance": 0.939,
+    "p": 0.744,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 13706,
+    "reasoning_tokens": 13285,
+    "cost_usd": 0.03
+   }
+  },
+  "gpt-5.6-sol": {
+   "low": {
+    "wer": 0.911,
+    "chance": 0.958,
+    "p": 0.0407,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1169,
+    "reasoning_tokens": 740,
+    "cost_usd": 0.953
+   },
+   "medium": {
+    "wer": 0.883,
+    "chance": 0.904,
+    "p": 0.231,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 7890,
+    "reasoning_tokens": 7473,
+    "cost_usd": 1.078
+   },
+   "high": {
+    "wer": 0.916,
+    "chance": 0.935,
+    "p": 0.25,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 9513,
+    "reasoning_tokens": 9091,
+    "cost_usd": 1.12
+   },
+   "xhigh": {
+    "wer": 0.916,
+    "chance": 0.909,
+    "p": 0.6474,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 25688,
+    "reasoning_tokens": 25265,
+    "cost_usd": 1.434
+   },
+   "max": {
+    "wer": 0.883,
+    "chance": 0.91,
+    "p": 0.1991,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 98309,
+    "reasoning_tokens": 97900,
+    "cost_usd": 2.896
+   }
+  },
+  "gpt-5.6-terra": {
+   "low": {
+    "wer": 0.981,
+    "chance": 0.983,
+    "p": 0.4946,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 949,
+    "reasoning_tokens": 516,
+    "cost_usd": 0.476
+   },
+   "medium": {
+    "wer": 1.014,
+    "chance": 1.041,
+    "p": 0.1673,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 717,
+    "reasoning_tokens": 273,
+    "cost_usd": 0.469
+   },
+   "high": {
+    "wer": 0.911,
+    "chance": 0.903,
+    "p": 0.6541,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4847,
+    "reasoning_tokens": 4436,
+    "cost_usd": 0.523
+   },
+   "xhigh": {
+    "wer": 0.935,
+    "chance": 0.959,
+    "p": 0.1909,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 24485,
+    "reasoning_tokens": 24072,
+    "cost_usd": 0.758
+   },
+   "max": {
+    "wer": 0.958,
+    "chance": 0.972,
+    "p": 0.3012,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 79802,
+    "reasoning_tokens": 79383,
+    "cost_usd": 1.422
+   }
+  },
+  "gpt-5.6-luna": {
+   "low": {
+    "wer": 1.056,
+    "chance": 1.046,
+    "p": 0.7174,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 792,
+    "reasoning_tokens": 380,
+    "cost_usd": 0.047
+   },
+   "medium": {
+    "wer": 0.907,
+    "chance": 0.95,
+    "p": 0.0651,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 3640,
+    "reasoning_tokens": 3221,
+    "cost_usd": 0.05
+   },
+   "high": {
+    "wer": 0.939,
+    "chance": 0.948,
+    "p": 0.3883,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 25277,
+    "reasoning_tokens": 24862,
+    "cost_usd": 0.076
+   },
+   "xhigh": {
+    "wer": 0.958,
+    "chance": 0.938,
+    "p": 0.8469,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 58340,
+    "reasoning_tokens": 57928,
+    "cost_usd": 0.116
+   },
+   "max": {
+    "wer": 0.925,
+    "chance": 0.947,
+    "p": 0.2122,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 116897,
+    "reasoning_tokens": 116480,
+    "cost_usd": 0.186
+   }
+  },
+  "Claude Fable 5.2": {
+   "low": {
+    "wer": 0.645,
+    "chance": 0.875,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.083,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 5864,
+    "reasoning_tokens": 5260,
+    "cost_usd": 1.984
+   },
+   "medium": {
+    "wer": 0.542,
+    "chance": 0.879,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.125,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 87404,
+    "reasoning_tokens": 86795,
+    "cost_usd": 5.246
+   }
+  },
+  "Claude Opus 5.5": {
+   "low": {
+    "wer": 0.991,
+    "chance": 1.015,
+    "p": 0.193,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 676,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.888
+   },
+   "medium": {
+    "wer": 0.925,
+    "chance": 0.961,
+    "p": 0.0566,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2061,
+    "reasoning_tokens": 1432,
+    "cost_usd": 0.916
+   },
+   "high": {
+    "wer": 0.869,
+    "chance": 0.931,
+    "p": 0.0233,
+    "above_chance": false,
+    "exact": 0.042,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2448,
+    "reasoning_tokens": 1835,
+    "cost_usd": 0.924
+   },
+   "xhigh": {
+    "wer": 0.766,
+    "chance": 0.931,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.042,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 85818,
+    "reasoning_tokens": 85184,
+    "cost_usd": 2.591
+   }
+  },
+  "Claude Sonnet 5.5": {
+   "low": {
+    "wer": 1.037,
+    "chance": 1.068,
+    "p": 0.1123,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 803,
+    "reasoning_tokens": 118,
+    "cost_usd": 0.445
+   },
+   "medium": {
+    "wer": 0.925,
+    "chance": 0.925,
+    "p": 0.52,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1631,
+    "reasoning_tokens": 961,
+    "cost_usd": 0.454
+   },
+   "high": {
+    "wer": 0.967,
+    "chance": 0.974,
+    "p": 0.4065,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2193,
+    "reasoning_tokens": 1561,
+    "cost_usd": 0.459
+   },
+   "xhigh": {
+    "wer": 0.855,
+    "chance": 0.894,
+    "p": 0.0887,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 56921,
+    "reasoning_tokens": 56348,
+    "cost_usd": 1.007
+   }
+  },
+  "Claude Haiku 5.5": {
+   "low": {
+    "wer": 0.836,
+    "chance": 0.873,
+    "p": 0.0804,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 5750,
+    "reasoning_tokens": 5051,
+    "cost_usd": 0.124
+   },
+   "medium": {
+    "wer": 0.949,
+    "chance": 0.918,
+    "p": 0.9141,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4357,
+    "reasoning_tokens": 3628,
+    "cost_usd": 0.12
+   },
+   "high": {
+    "wer": 0.921,
+    "chance": 0.9,
+    "p": 0.8237,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 8414,
+    "reasoning_tokens": 7102,
+    "cost_usd": 0.131
+   },
+   "xhigh": {
+    "wer": 0.93,
+    "chance": 0.921,
+    "p": 0.6668,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 13419,
+    "reasoning_tokens": 12720,
+    "cost_usd": 0.143
+   },
+   "max": {
+    "wer": 0.883,
+    "chance": 0.897,
+    "p": 0.2984,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 44416,
+    "reasoning_tokens": 43798,
+    "cost_usd": 0.221
+   }
+  },
+  "DeepSeek V4.1 Flash": {
+   "none": {
+    "wer": 1.089,
+    "chance": 1.094,
+    "p": 0.449,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 446,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.065
+   },
+   "low": {
+    "wer": 1.009,
+    "chance": 1.025,
+    "p": 0.266,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 7008,
+    "reasoning_tokens": 6563,
+    "cost_usd": 0.073
+   },
+   "high": {
+    "wer": 1.019,
+    "chance": 1.01,
+    "p": 0.7163,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 41022,
+    "reasoning_tokens": 40591,
+    "cost_usd": 0.114
+   },
+   "max": {
+    "wer": 0.902,
+    "chance": 0.922,
+    "p": 0.2455,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 112634,
+    "reasoning_tokens": 112222,
+    "cost_usd": 0.2
+   }
+  },
+  "DeepSeek V4 Pro": {
+   "none": {
+    "wer": 0.995,
+    "chance": 0.987,
+    "p": 0.657,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 415,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.286
+   },
+   "low": {
+    "wer": 0.893,
+    "chance": 0.893,
+    "p": 0.5234,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 14686,
+    "reasoning_tokens": 14277,
+    "cost_usd": 0.343
+   },
+   "high": {
+    "wer": 0.93,
+    "chance": 0.919,
+    "p": 0.6778,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 33589,
+    "reasoning_tokens": 33182,
+    "cost_usd": 0.418
+   },
+   "max": {
+    "wer": 0.967,
+    "chance": 0.964,
+    "p": 0.5836,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 42686,
+    "reasoning_tokens": 42274,
+    "cost_usd": 0.454
+   }
+  }
+ },
+ "zero_shot": {
+  "GPT Astra": {
+   "low": {
+    "wer": 1.29,
+    "chance": 1.285,
+    "p": 0.698,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 527,
+    "reasoning_tokens": 43,
+    "cost_usd": 0.626
+   },
+   "high": {
+    "wer": 1.285,
+    "chance": 1.298,
+    "p": 0.1795,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 569,
+    "reasoning_tokens": 85,
+    "cost_usd": 0.628
+   },
+   "max": {
+    "wer": 0.972,
+    "chance": 0.989,
+    "p": 0.1328,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 10939,
+    "reasoning_tokens": 10529,
+    "cost_usd": 1.147
+   }
+  },
+  "gpt-6.1-sol": {
+   "low": {
+    "wer": 1.266,
+    "chance": 1.254,
+    "p": 0.8804,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 493,
+    "reasoning_tokens": 17,
+    "cost_usd": 0.125
+   },
+   "high": {
+    "wer": 1.238,
+    "chance": 1.228,
+    "p": 0.8356,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 940,
+    "reasoning_tokens": 469,
+    "cost_usd": 0.129
+   },
+   "max": {
+    "wer": 1.033,
+    "chance": 1.042,
+    "p": 0.2748,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4885,
+    "reasoning_tokens": 4456,
+    "cost_usd": 0.169
+   }
+  },
+  "gpt-6.1-terra": {
+   "low": {
+    "wer": 1.304,
+    "chance": 1.308,
+    "p": 0.4137,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 502,
+    "reasoning_tokens": 14,
+    "cost_usd": 0.063
+   },
+   "high": {
+    "wer": 1.103,
+    "chance": 1.099,
+    "p": 0.699,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 455,
+    "reasoning_tokens": 25,
+    "cost_usd": 0.062
+   },
+   "max": {
+    "wer": 1.215,
+    "chance": 1.208,
+    "p": 0.8516,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2134,
+    "reasoning_tokens": 1670,
+    "cost_usd": 0.071
+   }
+  },
+  "gpt-6-sol": {
+   "low": {
+    "wer": 1.112,
+    "chance": 1.117,
+    "p": 0.4113,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 462,
+    "reasoning_tokens": 25,
+    "cost_usd": 0.125
+   },
+   "high": {
+    "wer": 1.327,
+    "chance": 1.331,
+    "p": 0.4536,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 662,
+    "reasoning_tokens": 172,
+    "cost_usd": 0.127
+   },
+   "max": {
+    "wer": 1.028,
+    "chance": 1.033,
+    "p": 0.3946,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 3528,
+    "reasoning_tokens": 3106,
+    "cost_usd": 0.155
+   }
+  },
+  "gpt-6-luna": {
+   "low": {
+    "wer": 1.528,
+    "chance": 1.528,
+    "p": 1.0,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 531,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.006
+   },
+   "high": {
+    "wer": 1.598,
+    "chance": 1.584,
+    "p": 0.9552,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1450,
+    "reasoning_tokens": 904,
+    "cost_usd": 0.007
+   },
+   "max": {
+    "wer": 1.579,
+    "chance": 1.575,
+    "p": 0.7053,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4002,
+    "reasoning_tokens": 3453,
+    "cost_usd": 0.008
+   }
+  },
+  "gpt-5.6-sol": {
+   "low": {
+    "wer": 1.206,
+    "chance": 1.215,
+    "p": 0.2561,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 516,
+    "reasoning_tokens": 53,
+    "cost_usd": 0.25
+   },
+   "high": {
+    "wer": 1.093,
+    "chance": 1.103,
+    "p": 0.1779,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1792,
+    "reasoning_tokens": 1355,
+    "cost_usd": 0.276
+   },
+   "max": {
+    "wer": 1.14,
+    "chance": 1.133,
+    "p": 0.8111,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 17593,
+    "reasoning_tokens": 17148,
+    "cost_usd": 0.592
+   }
+  },
+  "gpt-5.6-terra": {
+   "low": {
+    "wer": 1.103,
+    "chance": 1.11,
+    "p": 0.32,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 479,
+    "reasoning_tokens": 50,
+    "cost_usd": 0.126
+   },
+   "high": {
+    "wer": 1.262,
+    "chance": 1.248,
+    "p": 0.9515,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 711,
+    "reasoning_tokens": 242,
+    "cost_usd": 0.125
+   },
+   "max": {
+    "wer": 1.065,
+    "chance": 1.076,
+    "p": 0.224,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 18038,
+    "reasoning_tokens": 17610,
+    "cost_usd": 0.333
+   }
+  },
+  "gpt-5.6-luna": {
+   "low": {
+    "wer": 1.257,
+    "chance": 1.25,
+    "p": 0.8433,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 533,
+    "reasoning_tokens": 72,
+    "cost_usd": 0.012
+   },
+   "high": {
+    "wer": 1.107,
+    "chance": 1.118,
+    "p": 0.236,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 6644,
+    "reasoning_tokens": 6202,
+    "cost_usd": 0.02
+   },
+   "max": {
+    "wer": 1.154,
+    "chance": 1.138,
+    "p": 0.945,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 27381,
+    "reasoning_tokens": 26934,
+    "cost_usd": 0.045
+   }
+  },
+  "Claude Fable 5.2": {
+   "low": {
+    "wer": 1.299,
+    "chance": 1.298,
+    "p": 0.6725,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 689,
+    "reasoning_tokens": 66,
+    "cost_usd": 0.387
+   },
+   "high": {
+    "wer": 0.991,
+    "chance": 0.975,
+    "p": 0.8702,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1250,
+    "reasoning_tokens": 704,
+    "cost_usd": 0.409
+   }
+  },
+  "Claude Opus 5.5": {
+   "low": {
+    "wer": 1.033,
+    "chance": 1.061,
+    "p": 0.0116,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 551,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.191
+   },
+   "high": {
+    "wer": 1.098,
+    "chance": 1.096,
+    "p": 0.7339,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 800,
+    "reasoning_tokens": 293,
+    "cost_usd": 0.196
+   },
+   "max": {
+    "wer": 0.893,
+    "chance": 0.904,
+    "p": 0.3008,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 56622,
+    "reasoning_tokens": 56091,
+    "cost_usd": 1.312
+   }
+  },
+  "Claude Sonnet 5.5": {
+   "low": {
+    "wer": 0.944,
+    "chance": 0.954,
+    "p": 0.0969,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 597,
+    "reasoning_tokens": 75,
+    "cost_usd": 0.096
+   },
+   "high": {
+    "wer": 1.196,
+    "chance": 1.208,
+    "p": 0.2021,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 836,
+    "reasoning_tokens": 173,
+    "cost_usd": 0.098
+   }
+  },
+  "Claude Haiku 5.5": {
+   "low": {
+    "wer": 1.042,
+    "chance": 1.047,
+    "p": 0.3768,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 956,
+    "reasoning_tokens": 288,
+    "cost_usd": 0.025
+   },
+   "high": {
+    "wer": 1.0,
+    "chance": 1.004,
+    "p": 0.4565,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1620,
+    "reasoning_tokens": 993,
+    "cost_usd": 0.027
+   },
+   "max": {
+    "wer": 0.977,
+    "chance": 0.996,
+    "p": 0.0374,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 13696,
+    "reasoning_tokens": 12978,
+    "cost_usd": 0.057
+   }
+  },
+  "DeepSeek V4.1 Flash": {
+   "none": {
+    "wer": 1.182,
+    "chance": 1.175,
+    "p": 0.7968,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 517,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.014
+   },
+   "low": {
+    "wer": 0.995,
+    "chance": 0.993,
+    "p": 0.6752,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 5785,
+    "reasoning_tokens": 5407,
+    "cost_usd": 0.02
+   },
+   "high": {
+    "wer": 0.949,
+    "chance": 0.959,
+    "p": 0.1255,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 17856,
+    "reasoning_tokens": 17486,
+    "cost_usd": 0.035
+   }
+  },
+  "DeepSeek V4 Pro": {
+   "none": {
+    "wer": 1.014,
+    "chance": 1.019,
+    "p": 0.3645,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 392,
+    "reasoning_tokens": 0,
+    "cost_usd": 0.059
+   },
+   "low": {
+    "wer": 1.005,
+    "chance": 1.014,
+    "p": 0.1662,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2850,
+    "reasoning_tokens": 2443,
+    "cost_usd": 0.069
+   },
+   "high": {
+    "wer": 0.981,
+    "chance": 0.973,
+    "p": 0.8531,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 12748,
+    "reasoning_tokens": 12381,
+    "cost_usd": 0.108
+   },
+   "max": {
+    "wer": 1.042,
+    "chance": 1.045,
+    "p": 0.4882,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 10476,
+    "reasoning_tokens": 10058,
+    "cost_usd": 0.099
+   }
+  }
+ },
+ "hint": [
+  {
+   "model": "GPT Astra",
+   "effort": "low",
+   "without": {
+    "wer": 0.192,
+    "chance": 0.739,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.521,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 15046,
+    "reasoning_tokens": 14628
+   },
+   "with_hint": {
+    "wer": 0.121,
+    "chance": 0.73,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.604,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4562,
+    "reasoning_tokens": 4142
+   },
+   "change": -0.07,
+   "ci95": [
+    -0.118,
+    -0.026
+   ]
+  },
+  {
+   "model": "gpt-6.1-sol",
+   "effort": "high",
+   "without": {
+    "wer": 0.533,
+    "chance": 0.862,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.208,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 79419,
+    "reasoning_tokens": 78985
+   },
+   "with_hint": {
+    "wer": 0.215,
+    "chance": 0.752,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.5,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 58398,
+    "reasoning_tokens": 57980
+   },
+   "change": -0.318,
+   "ci95": [
+    -0.427,
+    -0.211
+   ]
+  },
+  {
+   "model": "gpt-6.1-terra",
+   "effort": "high",
+   "without": {
+    "wer": 0.72,
+    "chance": 0.93,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.021,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 476,
+    "reasoning_tokens": 46
+   },
+   "with_hint": {
+    "wer": 0.645,
+    "chance": 0.913,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.083,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 1203,
+    "reasoning_tokens": 768
+   },
+   "change": -0.075,
+   "ci95": [
+    -0.166,
+    0.015
+   ]
+  },
+  {
+   "model": "gpt-6-sol",
+   "effort": "high",
+   "without": {
+    "wer": 0.85,
+    "chance": 0.913,
+    "p": 0.0065,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 39023,
+    "reasoning_tokens": 38624
+   },
+   "with_hint": {
+    "wer": 0.804,
+    "chance": 0.891,
+    "p": 0.0001,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 27318,
+    "reasoning_tokens": 26911
+   },
+   "change": -0.047,
+   "ci95": [
+    -0.13,
+    0.042
+   ]
+  },
+  {
+   "model": "Claude Opus 5.5",
+   "effort": "high",
+   "without": {
+    "wer": 0.869,
+    "chance": 0.931,
+    "p": 0.0233,
+    "above_chance": false,
+    "exact": 0.042,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2448,
+    "reasoning_tokens": 1835
+   },
+   "with_hint": {
+    "wer": 0.818,
+    "chance": 0.906,
+    "p": 0.0003,
+    "above_chance": true,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 82572,
+    "reasoning_tokens": 81960
+   },
+   "change": -0.051,
+   "ci95": [
+    -0.15,
+    0.049
+   ]
+  },
+  {
+   "model": "DeepSeek V4.1 Flash",
+   "effort": "high",
+   "without": {
+    "wer": 1.019,
+    "chance": 1.01,
+    "p": 0.7163,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 41022,
+    "reasoning_tokens": 40591
+   },
+   "with_hint": {
+    "wer": 0.902,
+    "chance": 0.942,
+    "p": 0.0709,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 15601,
+    "reasoning_tokens": 15184
+   },
+   "change": -0.117,
+   "ci95": [
+    -0.181,
+    -0.053
+   ]
+  },
+  {
+   "model": "gpt-5.6-sol",
+   "effort": "high",
+   "without": {
+    "wer": 0.916,
+    "chance": 0.935,
+    "p": 0.25,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 9513,
+    "reasoning_tokens": 9091
+   },
+   "with_hint": {
+    "wer": 0.907,
+    "chance": 0.921,
+    "p": 0.3106,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 12589,
+    "reasoning_tokens": 12171
+   },
+   "change": -0.009,
+   "ci95": [
+    -0.103,
+    0.079
+   ]
+  },
+  {
+   "model": "Claude Sonnet 5.5",
+   "effort": "high",
+   "without": {
+    "wer": 0.967,
+    "chance": 0.974,
+    "p": 0.4065,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2193,
+    "reasoning_tokens": 1561
+   },
+   "with_hint": {
+    "wer": 0.907,
+    "chance": 0.931,
+    "p": 0.2185,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2469,
+    "reasoning_tokens": 1864
+   },
+   "change": -0.061,
+   "ci95": [
+    -0.141,
+    0.014
+   ]
+  },
+  {
+   "model": "Claude Haiku 5.5",
+   "effort": "high",
+   "without": {
+    "wer": 0.921,
+    "chance": 0.9,
+    "p": 0.8237,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 8414,
+    "reasoning_tokens": 7102
+   },
+   "with_hint": {
+    "wer": 0.921,
+    "chance": 0.936,
+    "p": 0.2847,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 7076,
+    "reasoning_tokens": 6370
+   },
+   "change": 0.0,
+   "ci95": [
+    -0.069,
+    0.061
+   ]
+  },
+  {
+   "model": "DeepSeek V4 Pro",
+   "effort": "high",
+   "without": {
+    "wer": 0.93,
+    "chance": 0.919,
+    "p": 0.6778,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 33589,
+    "reasoning_tokens": 33182
+   },
+   "with_hint": {
+    "wer": 0.935,
+    "chance": 0.913,
+    "p": 0.8,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 48144,
+    "reasoning_tokens": 47739
+   },
+   "change": 0.005,
+   "ci95": [
+    -0.051,
+    0.06
+   ]
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "effort": "high",
+   "without": {
+    "wer": 0.939,
+    "chance": 0.948,
+    "p": 0.3883,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 25277,
+    "reasoning_tokens": 24862
+   },
+   "with_hint": {
+    "wer": 0.939,
+    "chance": 0.931,
+    "p": 0.6732,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 31909,
+    "reasoning_tokens": 31502
+   },
+   "change": 0.0,
+   "ci95": [
+    -0.073,
+    0.074
+   ]
+  },
+  {
+   "model": "gpt-5.6-terra",
+   "effort": "high",
+   "without": {
+    "wer": 0.911,
+    "chance": 0.903,
+    "p": 0.6541,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 4847,
+    "reasoning_tokens": 4436
+   },
+   "with_hint": {
+    "wer": 0.949,
+    "chance": 0.93,
+    "p": 0.8151,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 7105,
+    "reasoning_tokens": 6693
+   },
+   "change": 0.037,
+   "ci95": [
+    -0.025,
+    0.1
+   ]
+  },
+  {
+   "model": "gpt-6-luna",
+   "effort": "high",
+   "without": {
+    "wer": 1.075,
+    "chance": 1.072,
+    "p": 0.6039,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 3237,
+    "reasoning_tokens": 2803
+   },
+   "with_hint": {
+    "wer": 1.023,
+    "chance": 1.005,
+    "p": 0.8057,
+    "above_chance": false,
+    "exact": 0.0,
+    "answered": 48,
+    "n": 48,
+    "output_tokens": 2272,
+    "reasoning_tokens": 1844
+   },
+   "change": -0.051,
+   "ci95": [
+    -0.157,
+    0.043
+   ]
+  }
+ ],
+ "tools": {
+  "GPT Astra": {
+   "wer": 0.056,
+   "chance": 0.719,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.75,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-6.1-sol": {
+   "wer": 0.065,
+   "chance": 0.715,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.771,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-6.1-terra": {
+   "wer": 0.229,
+   "chance": 0.766,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.438,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-6-sol": {
+   "wer": 0.327,
+   "chance": 0.765,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.167,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-6-luna": {
+   "wer": 0.322,
+   "chance": 0.781,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.25,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-5.6-sol": {
+   "wer": 0.159,
+   "chance": 0.743,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.521,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-5.6-terra": {
+   "wer": 0.266,
+   "chance": 0.773,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.417,
+   "answered": 48,
+   "n": 48
+  },
+  "gpt-5.6-luna": {
+   "wer": 0.369,
+   "chance": 0.771,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.292,
+   "answered": 48,
+   "n": 48
+  },
+  "Claude Fable 5.2": {
+   "wer": 0.126,
+   "chance": 0.722,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.583,
+   "answered": 48,
+   "n": 48
+  },
+  "Claude Opus 5.5": {
+   "wer": 0.131,
+   "chance": 0.717,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.562,
+   "answered": 48,
+   "n": 48
+  },
+  "Claude Sonnet 5.5": {
+   "wer": 0.696,
+   "chance": 0.889,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.042,
+   "answered": 48,
+   "n": 48
+  },
+  "Claude Haiku 5.5": {
+   "wer": 0.659,
+   "chance": 0.841,
+   "p": 0.0001,
+   "above_chance": true,
+   "exact": 0.042,
+   "answered": 48,
+   "n": 48
+  }
+ },
+ "seven_words": {
+  "models": [
+   {
+    "participant": "t12",
+    "model": "astra",
+    "effort": "high",
+    "labelled": 105,
+    "correct": 42,
+    "n": 42
+   },
+   {
+    "participant": "t12",
+    "model": "astra",
+    "effort": "low",
+    "labelled": 105,
+    "correct": 40,
+    "n": 42
+   },
+   {
+    "participant": "t12",
+    "model": "fable",
+    "effort": "high",
+    "labelled": 105,
+    "correct": 41,
+    "n": 42
+   },
+   {
+    "participant": "t12",
+    "model": "fable",
+    "effort": "low",
+    "labelled": 105,
+    "correct": 40,
+    "n": 42
+   },
+   {
+    "participant": "t12",
+    "model": "opus",
+    "effort": "high",
+    "labelled": 105,
+    "correct": 39,
+    "n": 42
+   },
+   {
+    "participant": "t12",
+    "model": "opus",
+    "effort": "low",
+    "labelled": 105,
+    "correct": 39,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "astra",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 42,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "astra",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 40,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "fable",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 41,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "fable",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 41,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "opus",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 41,
+    "n": 42
+   },
+   {
+    "participant": "t15",
+    "model": "opus",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 36,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "astra",
+    "effort": "high",
+    "labelled": 56,
+    "correct": 26,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "astra",
+    "effort": "low",
+    "labelled": 56,
+    "correct": 24,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "fable",
+    "effort": "high",
+    "labelled": 56,
+    "correct": 28,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "fable",
+    "effort": "low",
+    "labelled": 56,
+    "correct": 27,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "opus",
+    "effort": "high",
+    "labelled": 56,
+    "correct": 24,
+    "n": 42
+   },
+   {
+    "participant": "t16",
+    "model": "opus",
+    "effort": "low",
+    "labelled": 56,
+    "correct": 17,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "astra",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 39,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "astra",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 36,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "fable",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 36,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "fable",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 35,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "opus",
+    "effort": "high",
+    "labelled": 98,
+    "correct": 32,
+    "n": 42
+   },
+   {
+    "participant": "t17",
+    "model": "opus",
+    "effort": "low",
+    "labelled": 98,
+    "correct": 29,
+    "n": 42
+   }
+  ],
+  "classical": [
+   {
+    "participant": "t12",
+    "n": 42,
+    "n_context": 105,
+    "classes": 7,
+    "nearest_centroid": 0.9523809523809523,
+    "lda": 0.9523809523809523
+   },
+   {
+    "participant": "t15",
+    "n": 42,
+    "n_context": 98,
+    "classes": 7,
+    "nearest_centroid": 0.9047619047619048,
+    "lda": 0.9523809523809523
+   },
+   {
+    "participant": "t16",
+    "n": 42,
+    "n_context": 56,
+    "classes": 7,
+    "nearest_centroid": 0.6428571428571429,
+    "lda": 0.6904761904761905
+   },
+   {
+    "participant": "t17",
+    "n": 42,
+    "n_context": 98,
+    "classes": 7,
+    "nearest_centroid": 0.8333333333333334,
+    "lda": 0.8333333333333334
+   }
+  ]
+ },
+ "classical_sentences": [
+  {
+   "decoder": "nearest labelled trial",
+   "k": 16,
+   "wer": 0.841,
+   "chance": 0.918,
+   "p": 0.0002
+  },
+  {
+   "decoder": "GRU-CTC, characters",
+   "k": 16,
+   "wer": 0.963,
+   "chance": 0.988,
+   "p": 0.0165
+  },
+  {
+   "decoder": "GRU-CTC, words",
+   "k": 16,
+   "wer": 0.916,
+   "chance": 0.931,
+   "p": 0.1793
+  },
+  {
+   "decoder": "nearest labelled trial",
+   "k": 64,
+   "wer": 0.822,
+   "chance": 0.937,
+   "p": 0.0001
+  },
+  {
+   "decoder": "GRU-CTC, characters",
+   "k": 64,
+   "wer": 0.654,
+   "chance": 0.905,
+   "p": 0.0001
+  },
+  {
+   "decoder": "GRU-CTC, words",
+   "k": 64,
+   "wer": 0.836,
+   "chance": 0.9,
+   "p": 0.0003
+  },
+  {
+   "decoder": "nearest labelled trial",
+   "k": 192,
+   "wer": 0.78,
+   "chance": 0.898,
+   "p": 0.0001
+  },
+  {
+   "decoder": "GRU-CTC, characters",
+   "k": 192,
+   "wer": 0.519,
+   "chance": 0.863,
+   "p": 0.0001
+  },
+  {
+   "decoder": "GRU-CTC, words",
+   "k": 192,
+   "wer": 0.799,
+   "chance": 0.907,
+   "p": 0.0001
+  }
+ ],
+ "examples": [
+  {
+   "said": "Do you have it coming?",
+   "decoded": "Do you have it coming?"
+  },
+  {
+   "said": "My nurse is not good.",
+   "decoded": "My nurse is not good."
+  },
+  {
+   "said": "Is it okay?",
+   "decoded": "Is it okay?"
+  },
+  {
+   "said": "I am like you.",
+   "decoded": "I am like you."
+  },
+  {
+   "said": "I hope you are right.",
+   "decoded": "I hope you are right."
+  },
+  {
+   "said": "I hope that is.",
+   "decoded": "I hope it is."
+  },
+  {
+   "said": "You are right here.",
+   "decoded": "You are right here."
+  },
+  {
+   "said": "Yes, you have it right.",
+   "decoded": "Yes, you have it right."
+  },
+  {
+   "said": "I hope they have faith.",
+   "decoded": "I hope they have faith."
+  },
+  {
+   "said": "No, I am not very tired.",
+   "decoded": "No, I am not very tired."
+  },
+  {
+   "said": "Hope they feel right.",
+   "decoded": "Hope they do what?"
+  },
+  {
+   "said": "Do you have it here?",
+   "decoded": "Do you have it here?"
+  }
+ ]
+}

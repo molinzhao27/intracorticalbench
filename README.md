@@ -8,6 +8,9 @@ activity in, sentence out.
 
 ![Word error rate against number of labelled trials in the prompt](assets/figures/1_in_prompt.png)
 
+Short version of everything below: [`results/SUMMARY.md`](results/SUMMARY.md); the same numbers as data:
+`results/summary.json`.
+
 ## What is tested
 
 | Condition | Prompt |
@@ -21,8 +24,8 @@ activity in, sentence out.
 
 Data, all public: T15 sentences from Card et al. 2024 (Brain-to-Text '25), first session with a
 50-word vocabulary (`t15_small`) and an open-vocabulary session (`t15_open`); seven isolated
-attempted words from Kunz et al. 2025 for participants T12, T15, T16, T17. A loader for Willett et
-al. 2023 (T12 sentences) exists but has not been run.
+attempted words from Kunz et al. 2025 for participants T12, T15, T16, T17. Further sessions and participants,
+including Willett et al. 2023 (T12 sentences), are under "Broader data".
 
 **How activity is fed.** Threshold crossings and spike-band power are averaged into 160 ms frames,
 reduced to 12 principal components (fit without labels), and each component is cut into deciles
@@ -66,6 +69,110 @@ and durations alone achieves.
   trials, so the prompt format can carry a sentence decoder.
 - Reference decoder on the same input (small GRU-CTC over characters, trained from scratch, no
   language model): 0.65 at 64 trials, 0.52 at 192 on `t15_small`.
+
+### Which models can do it
+
+Twelve models on `t15_small` with 192 labelled trials in the prompt, no tools (WER at low / high
+effort; chance is about 0.73 for GPT Astra and 0.86-1.07 for the rest).
+
+![Word error rate by model](assets/figures/4_models.png)
+
+| Model | Low | High | Above chance (p <= 0.01)? |
+|---|---|---|---|
+| GPT Astra (`gpt-6-astra`) | 0.15 | 0.08 | yes |
+| `gpt-6.1-sol` | 0.56 | 0.53 | yes |
+| Claude Fable 5.2 | 0.68 | no answer | yes |
+| `gpt-6.1-terra` | 0.76 | 0.72 | yes |
+| `gpt-6-sol` | 0.97 | 0.85 | high effort only |
+| Claude Opus 5.5 | 0.94 | 0.86 | no (p = 0.017 at high effort) |
+| `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` | 0.91-1.06 | 0.91-0.94 | no |
+| Claude Sonnet 5.5, Claude Haiku 5.5 | 1.01-1.06 | 0.95-0.96 | no |
+| `gpt-6-luna` | 1.03 | 1.08 | no |
+
+GPT Astra and the Claude models were called through their APIs (8 held-out sentences per request).
+The other OpenAI models were run through the Codex CLI with tools forbidden and audited (all 48 in
+one request); GPT Astra by that route scores 0.19 / 0.11, so the routes agree. Sonnet 5.5 and Haiku
+5.5 are at chance at 16 and 64 trials too. Each cell is one run.
+
+### Reasoning effort
+
+Same test (192 labelled trials, no tools), every reasoning level each model offers, all 48 held-out
+trials in one request. WER, with reasoning tokens in brackets; ° marks cells not above chance
+(p > 0.01).
+
+![Accuracy against cost per run, one line per model](assets/figures/7_leaderboard.png)
+
+| Model | Off | Low | Medium | High | Extra high | Max |
+|---|---|---|---|---|---|---|
+| GPT Astra | | 0.19 [15k] | 0.14 [21k] | 0.11 [25k] | 0.13 [45k] | 0.09 [58k] |
+| `gpt-6.1-sol` | | 0.56 [4k] | 0.57 [19k] | 0.53 [79k] | 0.42 [37k] | 0.42 [97k] |
+| `gpt-6.1-terra` | | 0.76 [<0.1k] | 0.73 [<0.1k] | 0.72 [<0.1k] | 0.68 [4k] | 0.57 [42k] |
+| `gpt-6-sol` | | 0.97° [0k] | 0.84 [8k] | 0.85 [39k] | 0.82 [48k] | 0.82 [58k] |
+| Claude Fable 5.2 | | 0.64 [5k] | 0.54 [87k] | no answer | not run | not run |
+| Claude Opus 5.5 | | 0.99° [0k] | 0.93° [1k] | 0.87° [2k] | 0.77 [85k] | no answer |
+| `gpt-6-luna` | | 1.03° | 1.00° | 1.07° | 1.00° | 0.95° |
+| `gpt-5.6-sol` | | 0.91° | 0.88° | 0.92° | 0.92° | 0.88° [98k] |
+| `gpt-5.6-terra` | | 0.98° | 1.01° | 0.91° | 0.93° | 0.96° [79k] |
+| `gpt-5.6-luna` | | 1.06° | 0.91° | 0.94° | 0.96° | 0.93° [116k] |
+| Claude Sonnet 5.5 | | 1.04° | 0.93° | 0.97° | 0.86° [56k] | not run |
+| Claude Haiku 5.5 | | 0.84° | 0.95° | 0.92° | 0.93° | 0.88° [44k] |
+| DeepSeek V4.1 Flash | 1.09° | 1.01° | | 1.02° [41k] | | 0.90° [112k] |
+| DeepSeek V4 Pro | 1.00° | 0.89° | | 0.93° [33k] | | 0.97° [42k] |
+
+- More reasoning helps the models that can already do it (GPT Astra 0.19 -> 0.09, `gpt-6.1-sol`
+  0.56 -> 0.42, `gpt-6.1-terra` 0.76 -> 0.57, Opus 0.99 -> 0.77) and does nothing for the rest:
+  100k reasoning tokens leave `gpt-5.6-*` and DeepSeek at chance.
+- Reasoning is not required. `gpt-6.1-terra` scores 0.72-0.76 with under 100 reasoning tokens, and
+  GPT Astra's 0.19 costs 15k tokens for 48 sentences.
+- Fable 5.2 at high effort and Opus 5.5 at max ran into the 128k-token output limit while still
+  thinking, so they have no answer.
+- OpenAI models ran through the Codex CLI and Claude models through Claude Code, both with tools
+  switched off; DeepSeek through its API (`icbench/oneshot.py`).
+
+### Zero-shot, every model
+
+No labelled trials, only the 48 held-out recordings: 56 runs over the 14 models from reasoning off
+to max, including open vocabulary and image input. None is above chance: no run has p <= 0.01, two
+have p <= 0.05 (about three expected by luck), the mean gap to chance is 0.002 WER, and no sentence
+was ever decoded exactly. GPT Astra at max effort scores 0.97 against a chance of 0.99.
+
+### How the models do it
+
+Reasoning is hidden, so this is indirect evidence.
+
+- **Reasoning summaries** (Codex, GPT Astra): the headings read as segmenting a trial into words,
+  comparing stretches with named labelled trials, and telling look-alike words apart.
+- **Asked afterwards** in the same conversation: GPT Astra describes "manual template matching with
+  language-based guessing" and cites labelled trials and frame ranges that check out against the
+  data. Sonnet 5.5 says nothing came from the frames, only from trial duration. Fable 5.2's
+  follow-up was blocked by its safeguards.
+- **Behaviour**: GPT Astra's word accuracy rises with how often the word occurs in the labelled
+  trials (56% for the rarest words, 95% for the commonest), and its confusions are the ones trained
+  decoders make on this session (do/tell, they/you, not/that).
+
+So it is pattern matching against the examples in the prompt, done by the model itself.
+
+**Giving the method to the other models.** GPT Astra's description, turned into six general steps
+with no word-specific cues, was added to the prompt (WER without -> with):
+
+| Model | Effort | Without | With the method |
+|---|---|---|---|
+| `gpt-6.1-sol` | high | 0.53 | 0.21 |
+| GPT Astra | low | 0.19 | 0.12 |
+| `gpt-6.1-terra` | high | 0.72 | 0.64 |
+| `gpt-6-sol` | high | 0.85 | 0.80 |
+| Claude Opus 5.5 | high | 0.87° | 0.82 |
+| `gpt-5.6-sol`, `-terra`, `-luna` | high | 0.91-0.94° | 0.91-0.95° |
+| `gpt-6-luna` | high | 1.07° | 1.02° |
+| Claude Sonnet 5.5, Haiku 5.5 | high | 0.97°, 0.92° | 0.91°, 0.92° |
+| DeepSeek V4.1 Flash, V4 Pro | high | 1.02°, 0.93° | 0.90°, 0.93° |
+| Claude Fable 5.2 | medium | 0.54 | no answer |
+
+Only `gpt-6.1-sol` (50% of sentences exact, with fewer reasoning tokens than before) and GPT Astra
+improve by more than the noise of a 48-sentence test. Opus 5.5 goes from marginal (p = 0.02) to
+clearly above chance (p = 0.0003) while thinking 40 times longer (2k -> 82k tokens). The seven
+models that were flat at chance stay there, so knowing the method is not what they lack. Fable hit the output limit before answering; the
+answer it gave after being allowed to continue scores 0.59 and is not counted.
 
 ### With tools (Codex harness)
 
@@ -126,6 +233,58 @@ components or 26 levels in place of 12 components and 10 levels made GPT Astra w
 with 40, against 0.42), although a classical decoder improves on the richer input
 (`icbench/lossiness.py`: 0.54 -> 0.34 with 24 components).
 
+### Every model with tools
+
+All twelve models on `t15_small` (192 labelled trials), free to write and train a decoder, high
+effort, one run each. OpenAI models ran in the Codex CLI, Claude models in Claude Code.
+
+![Word error rate by model, with tools](assets/figures/6_models_tools.png)
+
+| Model | In the prompt (best effort) | With tools |
+|---|---|---|
+| GPT Astra | 0.08 | 0.06 |
+| `gpt-6.1-sol` | 0.53 | 0.07 |
+| Claude Fable 5.2 | 0.68 | 0.13 |
+| Claude Opus 5.5 | 0.86 | 0.13 |
+| `gpt-5.6-sol` | 0.91 | 0.16 |
+| `gpt-6.1-terra` | 0.72 | 0.23 |
+| `gpt-5.6-terra` | 0.91 | 0.27 |
+| `gpt-6-luna` | 1.03 | 0.32 |
+| `gpt-6-sol` | 0.85 | 0.33 |
+| `gpt-5.6-luna` | 0.94 | 0.37 |
+| Claude Haiku 5.5 | 0.96 | 0.66 |
+| Claude Sonnet 5.5 | 0.95 | 0.70 |
+
+Every model beats chance with tools (p = 0.0001), including the seven that are at chance in the
+prompt: writing a decoder is an engineering task, and decoding in the prompt is not. Most trained a
+CTC network or a word-level HMM with a small language model from the training sentences; Sonnet and
+Haiku fitted per-word logistic regressions on time-averaged features, which is why they trail.
+Audit notes: three Codex runs wrote scratch scripts to `/tmp`, and `gpt-5.6-sol` read Codex's own
+bundled skill files; none read data or other runs' folders.
+
+### Claude Fable 5.2 in an agent harness (Claude Code)
+
+The same task folders and rules, run headless in Claude Code at high effort, sandboxed (verified
+by a probe: no network, no reads or writes outside the task folder, no access to other runs).
+One run per cell; WER, with GPT Astra's Codex result for the same cell in brackets.
+
+| Dataset | Fable in the prompt | Full recording, no ML | Trains a decoder |
+|---|---|---|---|
+| `t15_small`, 192 trials | 0.68 low | 0.03 (Astra 0.13) | 0.13 (Astra 0.06) |
+| `t15_open`, 192 trials | 1.05-1.21 | 0.49 (Astra 0.61) | 0.31 (Astra 0.54) |
+| `t16_small`, 72 trials | 0.79 high | 0.11 (Astra 0.43) | 0.28 (Astra 0.28) |
+
+Fable is weak in the prompt but strong once it can run code. Its trained open-vocabulary decoder
+(word-count CTC, phoneme CTC with hand-written pronunciations, then sentences chosen by the model
+from candidate lists) recovers 40 of 108 words never seen in the labelled sentences (Astra: 12).
+
+The "no ML" numbers are not like-for-like with Astra's. Under the same written rules Fable went
+further: unsupervised PCA and whitening of the full recording, automatic cuts of labelled trials at
+envelope valleys, and for every test segment a *sorted* list of its correlation with every labelled
+word segment. It read those lists and typed the sentences, and said so in its notes, but that is a
+nearest-neighbour lookup in all but the final choice, which the rules were meant to exclude. On
+`t16_small` it also guessed two unseen words from its memory of the usual 50-word set.
+
 ### Broader data
 
 More participants, inner speech, other days, a cross-day split and image input. "With tools" is one
@@ -174,17 +333,18 @@ scores are in `results/cells/`. Regenerate with `uv run python -m icbench.report
 - The broader-data tools results are one agent run each, and the agent picks its own method, so
   they carry run-to-run variance that is not measured here.
 - Not run: GPT Astra in the prompt on the broader datasets or at high effort on open vocabulary
-  (API paused), in-prompt tests on the new open-vocabulary and cross-day sets.
+  (spending limit reached), in-prompt tests on the new open-vocabulary and cross-day sets.
 
 ## Running
 
 ```
 uv sync
-# keys in .env: ANTHROPIC_API_KEY, OPENAI_API_KEY
+# keys in .env: ANTHROPIC_API_KEY, OPENAI_API_KEY (DEEPSEEK_API_KEY for icbench.oneshot)
 uv run python -m icbench.run sentences --dataset t15_small --model fable --k 0 16 64 192 --effort low high
 uv run python -m icbench.run sentences --dataset t15_small --model fable --k 0 16 64 192 --effort low high --fmt none
 uv run python -m icbench.run words --dataset t12 t15 t16 t17 --model opus --k 1 --effort low high --batch 50
 uv run python -m icbench.baselines && uv run python -m icbench.report && uv run python -m icbench.figure
+uv run python -m icbench.summary   # results/summary.json, the numbers behind results/SUMMARY.md
 ```
 
 Every call is cached in `runs/cache`, so re-running a finished cell costs nothing. Spending is

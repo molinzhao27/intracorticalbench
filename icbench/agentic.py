@@ -149,8 +149,9 @@ def make(dataset: str, out: Path, python: str, k: int = 192, rules: str = "full"
 
 
 def audit(log: Path, taskdir: Path, python: str) -> dict:
-    """List every shell command the agent ran and flag any that mention a path outside the task folder."""
-    cmds = []
+    """List every shell command (and, for Claude Code, every file the agent touched or wrote) and flag
+    any that mention a path outside the task folder. Reads Codex `--json` and Claude Code stream-json logs."""
+    cmds, extra = [], {}
     for line in log.read_text().splitlines():
         try:
             ev = json.loads(line)
@@ -159,6 +160,19 @@ def audit(log: Path, taskdir: Path, python: str) -> dict:
         item = ev.get("item") or {}
         if ev.get("type") == "item.completed" and item.get("type") == "command_execution":
             cmds.append(item.get("command", ""))
+        elif ev.get("type") == "assistant":                        # Claude Code: tool calls are content blocks
+            for b in (ev.get("message") or {}).get("content", []):
+                if b.get("type") == "tool_use":
+                    i = b.get("input") or {}
+                    cmds.append(i.get("command") or " ".join(str(i.get(k, "")) for k in ("file_path", "path", "pattern", "content", "new_string")))
+        elif ev.get("type") == "user" and isinstance((ev.get("message") or {}).get("content"), list):
+            for b in ev["message"]["content"]:
+                if b.get("type") == "tool_result" and "sandbox_violations" in json.dumps(b.get("content")):
+                    extra["sandbox_violations"] = extra.get("sandbox_violations", 0) + 1
+        elif ev.get("type") == "result":
+            extra.update(models=sorted((ev.get("modelUsage") or {}).keys()), permission_denials=len(ev.get("permission_denials") or []),
+                         turns=ev.get("num_turns"), output_tokens=sum(m.get("outputTokens", 0) for m in (ev.get("modelUsage") or {}).values()),
+                         end=ev.get("subtype"))
     allowed = [str(taskdir), str(taskdir.resolve()), str(Path(python).parent.parent)]
     flagged = []
     for c in cmds:
@@ -167,7 +181,7 @@ def audit(log: Path, taskdir: Path, python: str) -> dict:
             stripped = stripped.replace(a, "")
         if re.search(r"/Users/|~/|\.\./|/Volumes|/private/|/tmp/|mdfind|locate |find /|curl |wget |pip install|hdf5|\.mat\b", stripped):
             flagged.append(c[:300])
-    return dict(n_commands=len(cmds), flagged=flagged)
+    return dict(n_commands=len(cmds), flagged=flagged, **extra)
 
 
 def do_score(dataset: str, taskdir: Path, model: str, effort: str, log: Path | None, python: str) -> None:
@@ -192,7 +206,7 @@ def do_score(dataset: str, taskdir: Path, model: str, effort: str, log: Path | N
     print(f"{name}: WER {s['wer']:.3f} (duration-matched chance {s['wer_chance_len']:.3f}, p={s['wer_p_len']:.4f})  CER {s['cer']:.3f}  "
           f"exact {s['exact']:.2f}  answered {len(ok)}/{len(refs)}")
     if log:
-        print(f"audit: {res['audit']['n_commands']} commands, {len(res['audit']['flagged'])} flagged")
+        print(f"audit: {res['audit']['n_commands']} commands, {len(res['audit']['flagged'])} flagged", {k: v for k, v in res["audit"].items() if k not in ("n_commands", "flagged")})
         for c in res["audit"]["flagged"]:
             print("   FLAG:", c)
 
@@ -246,6 +260,27 @@ def make_text(dataset: str, out: Path, k: int, a) -> None:
     print(f"wrote {out}: {len(ctx)} labelled + {len(queries)} query trials, about {len(text) // 2:,} tokens")
 
 
+def usage_from_log(log: Path) -> dict:
+    """Prompt and output tokens of a single-request run, from a Codex `--json` or Claude Code stream-json log."""
+    u = {}
+    for line in log.read_text().splitlines():
+        try:
+            ev = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if ev.get("type") == "turn.completed" and ev.get("usage"):       # Codex
+            x = ev["usage"]
+            u = dict(prompt=x.get("input_tokens", 0), cached=x.get("cached_input_tokens", 0), output=x.get("output_tokens", 0),
+                     reasoning=x.get("reasoning_output_tokens", 0))
+        elif ev.get("type") == "result" and ev.get("modelUsage"):         # Claude Code: take the main (largest) model
+            x = max(ev["modelUsage"].values(), key=lambda m: m.get("outputTokens", 0))
+            # Claude Code passes over the prompt twice (once uncached, once writing its cache); count it once
+            u = dict(prompt=max(x.get("inputTokens", 0), x.get("cacheReadInputTokens", 0) + x.get("cacheCreationInputTokens", 0)),
+                     cached=x.get("cacheReadInputTokens", 0), output=x.get("outputTokens", 0), reasoning=x.get("thinkingTokens"),
+                     notional_usd=x.get("costUSD"), stop=ev.get("stop_reason"), end=ev.get("subtype"))
+    return u
+
+
 def score_images(dataset: str, out: Path, k: int, model: str, effort: str, log: Path | None, a=None, fmt: str = "image") -> None:
     from .run import parse
     queries, ctx, _, _, _ = prepare(a or _args(), "sentences", dataset, k)
@@ -259,6 +294,7 @@ def score_images(dataset: str, out: Path, k: int, model: str, effort: str, log: 
     if log:
         res["audit"] = audit(log, out, "python")
         res["audit"]["tools_used"] = res["audit"]["n_commands"] > 0
+        res["usage"] = usage_from_log(log)
     (RESULTS / f"{name}.json").write_text(json.dumps(res, indent=1))
     print(f"{name}: WER {s['wer']:.3f} (duration-matched chance {s['wer_chance_len']:.3f}, p={s['wer_p_len']:.4f})  CER {s['cer']:.3f}  "
           f"exact {s['exact']:.2f}  answered {len(ok)}/{len(refs)}" + (f"  | commands run: {res['audit']['n_commands']}" if log else ""))
